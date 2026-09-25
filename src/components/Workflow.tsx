@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { workflow } from "@/data/workflow";
 import { Section } from "./ui/Section";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -29,6 +30,12 @@ export function Workflow() {
   const reduced = usePrefersReducedMotion();
   const total = workflow.length;
 
+  // Same treatment as the Timeline rail: a static track with a gradient fill
+  // driven by scroll position, rather than a one-shot reveal.
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.8", "end 0.6"] });
+  const width = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
   // One unbroken line from the centre of tile 01 to the centre of tile 09.
   const railInset = { left: TILE / 2, right: STEP_W - TILE / 2 };
 
@@ -44,7 +51,7 @@ export function Workflow() {
       }
       lead="AI compresses steps 05 through 07. It doesn't replace 01 through 04 — and that's the part most people skip."
     >
-      <div className="relative">
+      <div ref={ref} className="relative">
         {/* edge fades signal that the track scrolls */}
         <div
           aria-hidden
@@ -60,24 +67,19 @@ export function Workflow() {
             className="relative flex snap-x snap-mandatory"
             style={{ width: STEP_W * total }}
           >
-            {/* THE RAIL — a single element spanning every step, so 01 → 09 is one
-                continuous gradient with nothing interrupting it. It sits at the
-                vertical centre of the number tiles; titles live below them, so the
-                line never crosses text. */}
+            {/* THE RAIL — one element spanning every step, so 01 → 09 is a single
+                unbroken line with nothing interrupting it. Sits at the vertical
+                centre of the number tiles; titles live below them, so the line
+                never crosses text. Static track + scroll-driven fill, matching
+                the Timeline rail. */}
             <span
               aria-hidden
-              className="pointer-events-none absolute z-0 h-px"
+              className="pointer-events-none absolute z-0 h-px bg-line"
               style={{ top: TILE / 2, left: railInset.left, right: railInset.right }}
             >
               <motion.span
-                className="block h-full w-full origin-left"
-                style={{
-                  backgroundImage: `linear-gradient(90deg, ${rampColor(0)}, ${rampColor(0.5)}, ${rampColor(1)})`,
-                }}
-                initial={reduced ? undefined : { scaleX: 0 }}
-                whileInView={reduced ? undefined : { scaleX: 1 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                style={reduced ? { width: "100%" } : { width }}
+                className="block h-full bg-gradient-to-r from-amber-400 via-rose-400 to-yellow-300"
               />
             </span>
 
