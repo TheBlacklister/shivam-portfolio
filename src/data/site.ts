@@ -17,8 +17,7 @@ export const site = {
   email: "guptashivam0307@gmail.com",
   phone: "+91 90387 27270",
 
-  // TODO: confirm these
-  url: "https://shivamgupta.dev",
+  url: "https://shivam-portfolio.vercel.app",
   resumeHref: "/Shivam_Gupta-Resume.pdf",
 
   socials: {
