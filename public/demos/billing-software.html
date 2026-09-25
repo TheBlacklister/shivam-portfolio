@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Billing Software — Prototype</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1F2937;
+    --navy-2:#111827;
+    --navy-hover:rgba(255,255,255,.06);
+    --bg:#F5F7FA;
+    --card:#FFFFFF;
+    --blue:#3B82F6;
+    --blue-dark:#2563EB;
+    --blue-soft:#EFF6FF;
+    --green:#10B981;
+    --green-soft:#ECFDF5;
+    --orange:#F59E0B;
+    --orange-soft:#FFFBEB;
+    --red:#EF4444;
+    --red-soft:#FEF2F2;
+    --text:#111827;
+    --muted:#6B7280;
+    --muted-2:#9CA3AF;
+    --border:#E5E7EB;
+    --radius:14px;
+    --radius-sm:9px;
+    --shadow:0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06);
+    --shadow-lg:0 12px 32px rgba(16,24,40,.12);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{display:flex;height:100vh;overflow:hidden}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:232px;flex-shrink:0;background:var(--navy);
+    display:flex;flex-direction:column;padding:22px 0 16px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;padding:0 22px 26px;
+    color:#fff;font-weight:700;font-size:16.5px;letter-spacing:-.01em;
+  }
+  .brand .dot{width:9px;height:9px;border-radius:3px;background:var(--blue);flex-shrink:0}
+  .nav{display:flex;flex-direction:column;gap:2px;padding:0 10px}
+  .nav-item{
+    display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;
+    color:#9CA3AF;font-size:13.5px;font-weight:500;cursor:pointer;
+    border-left:3px solid transparent;transition:background .12s,color .12s;
+    user-select:none;
+  }
+  .nav-item:hover{background:var(--navy-hover);color:#fff}
+  .nav-item.active{background:rgba(59,130,246,.16);color:#fff}
+  .nav-item .ic{width:18px;text-align:center;font-size:15px}
+  .sidebar-bottom{margin-top:auto;padding:14px 20px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .sync-row{display:flex;align-items:center;gap:8px;font-size:12px;color:#9CA3AF;padding:8px 2px}
+  .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+  .sync-dot.saving{background:var(--orange);animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .profile-row{display:flex;align-items:center;gap:10px;padding:8px 2px;color:#e5e7eb;font-size:13px;font-weight:500}
+  .avatar-sm{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+
+  /* ---------- Main ---------- */
+  .main{flex:1;overflow-y:auto;position:relative}
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;position:sticky;top:0;background:var(--bg);z-index:5;
+  }
+  .page-title{font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .page-sub{font-size:13px;color:var(--muted);margin-top:2px}
+  .content{padding:0 32px 40px}
+
+  .view{display:none}
+  .view.active{display:block;animation:fadein .18s ease}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- Common bits ---------- */
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border)}
+  .pad{padding:22px}
+  .btn{
+    border:none;font-family:inherit;font-weight:600;font-size:13.5px;border-radius:9px;
+    padding:10px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    transition:transform .06s, background .12s, box-shadow .12s;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:var(--blue);color:#fff;box-shadow:0 1px 2px rgba(37,99,235,.3)}
+  .btn-primary:hover{background:var(--blue-dark)}
+  .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
+  .btn-ghost:hover{background:#F9FAFB}
+  .btn-sm{padding:7px 12px;font-size:12.5px}
+  .btn-danger-ghost{background:#fff;border:1px solid var(--border);color:var(--red)}
+
+  input,select,textarea{
+    font-family:inherit;font-size:13.5px;border:1px solid var(--border);border-radius:9px;
+    padding:9px 12px;width:100%;background:#fff;color:var(--text);outline:none;
+    transition:border-color .12s, box-shadow .12s;
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+  label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+  .field{margin-bottom:14px}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+  .pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:600}
+  .pill-green{background:var(--green-soft);color:#047857}
+  .pill-orange{background:var(--orange-soft);color:#B45309}
+  .pill-red{background:var(--red-soft);color:#B91C1C}
+  .pill-blue{background:var(--blue-soft);color:#1D4ED8}
+  .pill-gray{background:#F3F4F6;color:#4B5563}
+
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-2);padding:10px 14px;border-bottom:1px solid var(--border);font-weight:700}
+  td{padding:13px 14px;border-bottom:1px solid var(--border);font-size:13.5px}
+  tbody tr{cursor:pointer;transition:background .1s}
+  tbody tr:hover{background:#FAFBFC}
+  tbody tr:last-child td{border-bottom:none}
+
+  .searchbar{position:relative}
+  .searchbar input{padding-left:36px}
+  .searchbar .sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted-2);font-size:14px}
+
+  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;color:var(--muted);text-align:center}
+  .empty .big{font-size:30px;margin-bottom:8px}
+
+  /* ---------- Dashboard ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+  .stat-card{padding:18px 20px}
+  .stat-label{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:8px}
+  .stat-value{font-size:24px;font-weight:800;letter-spacing:-.02em}
+  .stat-delta{font-size:12px;margin-top:6px;font-weight:600}
+  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+  .quick-card{padding:20px;cursor:pointer;transition:transform .12s,box-shadow .12s}
+  .quick-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  .quick-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+  .quick-title{font-weight:700;font-size:14.5px;margin-bottom:2px}
+  .quick-sub{font-size:12px;color:var(--muted)}
+
+  /* ---------- Generate Bill ---------- */
+  .billing-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:start}
+  .section-label{font-size:12.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .step-num{width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .customer-result{padding:9px 12px;border:1px solid var(--border);border-radius:8px;margin-top:6px;font-size:13px;cursor:pointer}
+  .customer-result:hover{border-color:var(--blue);background:var(--blue-soft)}
+  .selected-customer{background:var(--blue-soft);border:1px solid #BFDBFE;border-radius:10px;padding:12px 14px;font-size:13.5px;margin-top:8px;display:flex;justify-content:space-between;align-items:flex-start}
+  .item-row{display:grid;grid-template-columns:2.2fr .8fr .9fr .8fr .9fr 28px;gap:8px;align-items:center;margin-bottom:8px}
+  .item-row input{padding:7px 9px;font-size:13px}
+  .item-row .rm{background:none;border:none;color:var(--muted-2);cursor:pointer;font-size:15px}
+  .item-row .rm:hover{color:var(--red)}
+  .item-head{display:grid;grid-template-columns:2.2fr .8fr .9fr .8fr .9fr 28px;gap:8px;font-size:10.5px;text-transform:uppercase;color:var(--muted-2);font-weight:700;letter-spacing:.03em;padding:0 2px 6px}
+  .totals-box{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border)}
+  .totals-line{display:flex;justify-content:space-between;font-size:13.5px;padding:5px 0;color:var(--muted)}
+  .totals-line.grand{color:var(--text);font-weight:800;font-size:17px;border-top:1px solid var(--border);margin-top:6px;padding-top:12px}
+  .pay-methods{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .pay-chip{padding:8px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+  .pay-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .invoice-sticky{position:sticky;top:78px}
+  .invoice-sheet{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:28px 26px;font-size:12.5px}
+  .inv-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:14px}
+  .inv-logo{width:44px;height:44px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+  .inv-co-name{font-weight:800;font-size:15px;margin-top:8px}
+  .inv-co-meta{color:var(--muted);font-size:11px;line-height:1.6;margin-top:2px}
+  .inv-meta-right{text-align:right;font-size:11.5px;color:var(--muted)}
+  .inv-meta-right b{color:var(--text)}
+  .inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
+  .inv-party-label{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-2);font-weight:700;margin-bottom:4px}
+  .inv-party-name{font-weight:700;font-size:13px}
+  .inv-party-meta{color:var(--muted);font-size:11.5px;line-height:1.6}
+  .inv-table{width:100%;border-collapse:collapse;margin-bottom:12px}
+  .inv-table th{background:var(--navy);color:#fff;font-size:10px;padding:7px 8px;text-transform:uppercase;letter-spacing:.02em}
+  .inv-table td{padding:7px 8px;border-bottom:1px solid #F0F1F3;font-size:12px}
+  .inv-totals{margin-left:auto;width:220px}
+  .inv-totals .totals-line{font-size:12.5px;padding:4px 0}
+  .inv-totals .grand{font-size:15px}
+  .inv-footer{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--border)}
+  .inv-bank{font-size:11px;color:var(--muted);line-height:1.7}
+  .inv-bank b{color:var(--text)}
+  .qr-box{width:64px;height:64px;border:1px dashed var(--muted-2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted-2);text-align:center;margin-left:auto}
+  .inv-terms{font-size:10.5px;color:var(--muted-2);margin-top:10px}
+  .inv-actions{display:flex;gap:8px;margin-top:16px}
+
+  /* ---------- Bills / filters ---------- */
+  .filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+  .filter-bar .searchbar{flex:1;min-width:220px}
+  .filter-bar select{width:auto;min-width:130px}
+
+  /* ---------- Customers ---------- */
+  .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .cust-card{padding:18px;cursor:pointer;transition:transform .12s, box-shadow .12s}
+  .cust-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  .cust-top{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#6366F1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+  .cust-name{font-weight:700;font-size:14.5px}
+  .cust-phone{font-size:12px;color:var(--muted)}
+  .cust-stats{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px}
+  .cust-stats b{color:var(--text);font-size:13px;display:block}
+
+  /* ---------- Slide panel ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(17,24,39,.35);opacity:0;pointer-events:none;transition:opacity .25s;z-index:40}
+  .overlay.show{opacity:1;pointer-events:auto}
+  .slide-panel{
+    position:fixed;top:0;left:0;height:100%;width:30%;min-width:340px;background:#fff;
+    box-shadow:var(--shadow-lg);z-index:50;transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;
+  }
+  .slide-panel.show{transform:translateX(0)}
+  .panel-head{padding:22px 22px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+  .panel-close{background:#F3F4F6;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;color:var(--muted)}
+  .panel-body{padding:20px 22px}
+  .panel-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#6366F1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;margin-bottom:12px}
+  .info-line{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F3F4F6;font-size:13px}
+  .info-line span:first-child{color:var(--muted)}
+  .tabs{display:flex;gap:4px;margin:18px 0 12px;background:#F3F4F6;padding:4px;border-radius:9px}
+  .tab{flex:1;text-align:center;padding:7px;border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--muted)}
+  .tab.active{background:#fff;color:var(--text);box-shadow:var(--shadow)}
+  .order-row{display:flex;justify-content:space-between;padding:11px 12px;border:1px solid var(--border);border-radius:9px;margin-bottom:8px;cursor:pointer;font-size:13px}
+  .order-row:hover{border-color:var(--blue);background:var(--blue-soft)}
+
+  /* ---------- Products ---------- */
+  .prod-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .view-toggle{display:flex;background:#F3F4F6;padding:3px;border-radius:9px}
+  .view-toggle button{border:none;background:none;padding:6px 12px;border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--muted)}
+  .view-toggle button.active{background:#fff;box-shadow:var(--shadow)}
+  .prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .prod-card{padding:16px;cursor:pointer;transition:transform .12s,box-shadow .12s}
+  .prod-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  .prod-cat{width:100%;height:64px;border-radius:9px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px}
+  .prod-name{font-weight:700;font-size:13.5px;margin-bottom:2px}
+  .prod-desc{font-size:11.5px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+  .prod-price-row{display:flex;justify-content:space-between;align-items:center}
+  .prod-price{font-weight:800;font-size:15px}
+
+  /* ---------- Modal ---------- */
+  .modal-bg{position:fixed;inset:0;background:rgba(17,24,39,.45);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:var(--radius);width:100%;max-width:480px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+  .modal-lg{max-width:640px}
+  .modal-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+  .modal-head h3{margin:0;font-size:16px}
+  .modal-body{padding:22px}
+  .modal-foot{padding:16px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+
+  .toast{
+    position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 18px;
+    border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);
+    transform:translateY(20px);opacity:0;transition:.25s;z-index:80;
+  }
+  .toast.show{transform:translateY(0);opacity:1}
+
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#D1D5DB;border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand"><span class="dot"></span>Anthem Billing</div>
+    <div class="nav">
+      <div class="nav-item active" data-view="dashboard"><span class="ic">🏠</span>Dashboard</div>
+      <div class="nav-item" data-view="generate"><span class="ic">🧾</span>Generate Bill</div>
+      <div class="nav-item" data-view="bills"><span class="ic">📄</span>Bills</div>
+      <div class="nav-item" data-view="customers"><span class="ic">👤</span>Customers</div>
+      <div class="nav-item" data-view="products"><span class="ic">📦</span>Products</div>
+      <div class="nav-item" data-view="company"><span class="ic">🏢</span>Company Profile</div>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="sync-row"><span class="sync-dot" id="syncDot"></span><span id="syncText">All changes saved</span></div>
+      <div class="profile-row"><span class="avatar-sm">SH</span>Shivam</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ============ DASHBOARD ============ -->
+    <div class="view active" id="view-dashboard">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Good afternoon, Shivam</div>
+          <div class="page-sub" id="todayDate"></div>
+        </div>
+        <button class="btn btn-primary" onclick="goTo('generate')">+ Generate New Bill</button>
+      </div>
+      <div class="content">
+        <div class="stat-grid">
+          <div class="card stat-card">
+            <div class="stat-label">Today's Bills</div>
+            <div class="stat-value" id="statBillsToday">8</div>
+            <div class="stat-delta" style="color:var(--green)">↑ 2 vs yesterday</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Today's Revenue</div>
+            <div class="stat-value" id="statRevenueToday">₹42,150</div>
+            <div class="stat-delta" style="color:var(--green)">↑ 12% vs yesterday</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value" id="statCustomers">0</div>
+            <div class="stat-delta" style="color:var(--muted)">across all time</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Total Products</div>
+            <div class="stat-value" id="statProducts">0</div>
+            <div class="stat-delta" style="color:var(--muted)">in catalog</div>
+          </div>
+        </div>
+
+        <div class="quick-grid">
+          <div class="card quick-card" onclick="goTo('generate')">
+            <div class="quick-ic" style="background:var(--blue-soft);color:var(--blue)">🧾</div>
+            <div class="quick-title">Generate Bill</div>
+            <div class="quick-sub">Create a new invoice</div>
+          </div>
+          <div class="card quick-card" onclick="goTo('customers')">
+            <div class="quick-ic" style="background:var(--green-soft);color:#047857">👤</div>
+            <div class="quick-title">Customers</div>
+            <div class="quick-sub">View customer profiles</div>
+          </div>
+          <div class="card quick-card" onclick="goTo('products')">
+            <div class="quick-ic" style="background:var(--orange-soft);color:#B45309">📦</div>
+            <div class="quick-title">Products</div>
+            <div class="quick-sub">Manage your catalog</div>
+          </div>
+          <div class="card quick-card" onclick="goTo('bills')">
+            <div class="quick-ic" style="background:#F3E8FF;color:#7E22CE">📄</div>
+            <div class="quick-title">Bills</div>
+            <div class="quick-sub">Search past invoices</div>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <div class="section-label">Recent Bills</div>
+          <table>
+            <thead><tr><th>Invoice #</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody id="recentBillsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GENERATE BILL ============ -->
+    <div class="view" id="view-generate">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Generate New Bill</div>
+          <div class="page-sub">Invoice updates live as you type</div>
+        </div>
+        <button class="btn btn-ghost" onclick="resetBill()">↺ Reset</button>
+      </div>
+      <div class="content">
+        <div class="billing-grid">
+          <!-- LEFT: FORM -->
+          <div>
+            <div class="card pad" style="margin-bottom:16px">
+              <div class="section-label"><span class="step-num">1</span>Customer</div>
+              <div class="searchbar">
+                <span class="sic">🔍</span>
+                <input type="text" id="custSearch" placeholder="Search customer by name or phone..." oninput="renderCustSearch()">
+              </div>
+              <div id="custSearchResults"></div>
+              <div id="selectedCustomerBox"></div>
+              <div style="margin-top:10px">
+                <button class="btn btn-ghost btn-sm" onclick="openModal('modalNewCustomer')">+ New Customer</button>
+              </div>
+            </div>
+
+            <div class="card pad" style="margin-bottom:16px">
+              <div class="section-label"><span class="step-num">2</span>Add Products</div>
+              <div class="searchbar">
+                <span class="sic">🔍</span>
+                <input type="text" id="prodSearch" placeholder="Search product or scan barcode..." oninput="renderProdSearch()">
+              </div>
+              <div id="prodSearchResults"></div>
+
+              <div style="margin-top:16px">
+                <div class="item-head">
+                  <div>Product</div><div>Qty</div><div>Rate</div><div>GST%</div><div>Amount</div><div></div>
+                </div>
+                <div id="itemRows"></div>
+                <div class="empty" id="itemsEmpty" style="padding:24px 10px">
+                  <div class="big">🛒</div>
+                  No items added yet — search above to add products
+                </div>
+              </div>
+
+              <div class="totals-box">
+                <div class="field" style="max-width:220px">
+                  <label>Discount (₹)</label>
+                  <input type="number" id="discountInput" value="0" min="0" oninput="renderInvoice()">
+                </div>
+                <div class="totals-line"><span>Subtotal</span><span id="tSubtotal">₹0.00</span></div>
+                <div class="totals-line"><span>GST</span><span id="tGst">₹0.00</span></div>
+                <div class="totals-line"><span>Discount</span><span id="tDiscount">−₹0.00</span></div>
+                <div class="totals-line grand"><span>Grand Total</span><span id="tGrand">₹0.00</span></div>
+              </div>
+            </div>
+
+            <div class="card pad">
+              <div class="section-label"><span class="step-num">3</span>Payment</div>
+              <div class="pay-methods" id="payMethods">
+                <div class="pay-chip active" data-pay="Cash">💵 Cash</div>
+                <div class="pay-chip" data-pay="UPI">📱 UPI</div>
+                <div class="pay-chip" data-pay="Card">💳 Card</div>
+                <div class="pay-chip" data-pay="Bank">🏦 Bank Transfer</div>
+                <div class="pay-chip" data-pay="Credit">🕒 Credit</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: LIVE PREVIEW -->
+          <div class="invoice-sticky">
+            <div class="invoice-sheet" id="invoiceSheet"></div>
+            <div class="inv-actions">
+              <button class="btn btn-primary" style="flex:1" onclick="saveBill()">Save & Print</button>
+              <button class="btn btn-ghost">Save PDF</button>
+              <button class="btn btn-ghost">Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ BILLS ============ -->
+    <div class="view" id="view-bills">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Bills</div>
+          <div class="page-sub" id="billsCount"></div>
+        </div>
+        <button class="btn btn-primary" onclick="goTo('generate')">+ Generate New Bill</button>
+      </div>
+      <div class="content">
+        <div class="card pad">
+          <div class="filter-bar">
+            <div class="searchbar">
+              <span class="sic">🔍</span>
+              <input type="text" id="billSearch" placeholder="Search by customer, phone or invoice number..." oninput="renderBillsTable()">
+            </div>
+            <select id="billStatusFilter" onchange="renderBillsTable()">
+              <option value="">All statuses</option>
+              <option value="Paid">Paid</option>
+              <option value="Pending">Pending</option>
+              <option value="Partially Paid">Partially Paid</option>
+            </select>
+            <select id="billSortFilter" onchange="renderBillsTable()">
+              <option value="date-desc">Newest first</option>
+              <option value="date-asc">Oldest first</option>
+              <option value="amount-desc">Amount: high to low</option>
+              <option value="amount-asc">Amount: low to high</option>
+            </select>
+          </div>
+          <table>
+            <thead><tr><th>Invoice #</th><th>Customer</th><th>Date</th><th>Amount</th><th>Payment</th><th>Status</th></tr></thead>
+            <tbody id="billsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CUSTOMERS ============ -->
+    <div class="view" id="view-customers">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Customers</div>
+          <div class="page-sub" id="custCount"></div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modalNewCustomer')">+ Add Customer</button>
+      </div>
+      <div class="content">
+        <div class="searchbar" style="max-width:360px;margin-bottom:18px">
+          <span class="sic">🔍</span>
+          <input type="text" id="custPageSearch" placeholder="Search customers..." oninput="renderCustomerGrid()">
+        </div>
+        <div class="cust-grid" id="custGrid"></div>
+      </div>
+    </div>
+
+    <!-- ============ PRODUCTS ============ -->
+    <div class="view" id="view-products">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Products</div>
+          <div class="page-sub">Your product catalog — no stock tracking, order-per-basis</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modalNewProduct')">+ Add Product</button>
+      </div>
+      <div class="content">
+        <div class="prod-toolbar">
+          <div class="searchbar" style="max-width:340px">
+            <span class="sic">🔍</span>
+            <input type="text" id="prodPageSearch" placeholder="Search products..." oninput="renderProductGrid()">
+          </div>
+          <div class="view-toggle">
+            <button class="active" id="toggleCard" onclick="setProdView('card')">▦ Cards</button>
+            <button id="toggleTable" onclick="setProdView('table')">☰ Table</button>
+          </div>
+        </div>
+        <div class="prod-grid" id="prodGrid"></div>
+        <div class="card" id="prodTableWrap" style="display:none">
+          <table>
+            <thead><tr><th>Name</th><th>Category</th><th>HSN</th><th>Price</th><th>GST%</th><th></th></tr></thead>
+            <tbody id="prodTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ COMPANY PROFILE ============ -->
+    <div class="view" id="view-company">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Company Profile</div>
+          <div class="page-sub">These details automatically appear on every invoice</div>
+        </div>
+        <button class="btn btn-primary" onclick="saveCompany()">Save Changes</button>
+      </div>
+      <div class="content">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div class="card pad">
+            <div class="section-label">Business Details</div>
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+              <div class="inv-logo" style="width:56px;height:56px;font-size:20px" id="companyLogoPreview">RL</div>
+              <button class="btn btn-ghost btn-sm">Upload Logo</button>
+            </div>
+            <div class="field"><label>Company Name</label><input id="cName" oninput="onCompanyEdit()"></div>
+            <div class="row-2">
+              <div class="field"><label>GSTIN</label><input id="cGstin" oninput="onCompanyEdit()"></div>
+              <div class="field"><label>PAN Number</label><input id="cPan" oninput="onCompanyEdit()"></div>
+            </div>
+            <div class="field"><label>Address</label><textarea id="cAddress" rows="2" oninput="onCompanyEdit()"></textarea></div>
+            <div class="row-2">
+              <div class="field"><label>Phone</label><input id="cPhone" oninput="onCompanyEdit()"></div>
+              <div class="field"><label>Email</label><input id="cEmail" oninput="onCompanyEdit()"></div>
+            </div>
+          </div>
+          <div class="card pad">
+            <div class="section-label">Bank &amp; Invoice Settings</div>
+            <div class="field"><label>Account Holder</label><input id="bHolder" oninput="onCompanyEdit()"></div>
+            <div class="row-2">
+              <div class="field"><label>Bank Name</label><input id="bBank" oninput="onCompanyEdit()"></div>
+              <div class="field"><label>Branch</label><input id="bBranch" oninput="onCompanyEdit()"></div>
+            </div>
+            <div class="row-2">
+              <div class="field"><label>Account Number</label><input id="bAccount" oninput="onCompanyEdit()"></div>
+              <div class="field"><label>IFSC Code</label><input id="bIfsc" oninput="onCompanyEdit()"></div>
+            </div>
+            <div class="field"><label>UPI ID</label><input id="bUpi" oninput="onCompanyEdit()"></div>
+            <div class="field"><label>Terms &amp; Conditions</label><textarea id="cTerms" rows="3" oninput="onCompanyEdit()"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CUSTOMER SLIDE PANEL -->
+<div class="overlay" id="panelOverlay" onclick="closePanel()"></div>
+<div class="slide-panel" id="customerPanel"></div>
+
+<!-- BILL PREVIEW MODAL -->
+<div class="modal-bg" id="modalBillPreview">
+  <div class="modal modal-lg">
+    <div class="modal-head"><h3>Invoice Preview</h3><button class="panel-close" onclick="closeModal('modalBillPreview')">✕</button></div>
+    <div class="modal-body"><div class="invoice-sheet" id="modalInvoiceSheet"></div></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalBillPreview')">Close</button>
+      <button class="btn btn-primary">Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW CUSTOMER MODAL -->
+<div class="modal-bg" id="modalNewCustomer">
+  <div class="modal">
+    <div class="modal-head"><h3>New Customer</h3><button class="panel-close" onclick="closeModal('modalNewCustomer')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Full Name</label><input id="ncName" placeholder="John Smith"></div>
+      <div class="row-2">
+        <div class="field"><label>Phone</label><input id="ncPhone" placeholder="9999999999"></div>
+        <div class="field"><label>GST Number</label><input id="ncGstin" placeholder="Optional"></div>
+      </div>
+      <div class="field"><label>Email</label><input id="ncEmail" placeholder="Optional"></div>
+      <div class="field"><label>Address</label><textarea id="ncAddress" rows="2"></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalNewCustomer')">Cancel</button>
+      <button class="btn btn-primary" onclick="createCustomer()">Add Customer</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PRODUCT MODAL -->
+<div class="modal-bg" id="modalNewProduct">
+  <div class="modal">
+    <div class="modal-head"><h3>New Product</h3><button class="panel-close" onclick="closeModal('modalNewProduct')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Product Name</label><input id="npName" placeholder="e.g. Hydraulic Pump"></div>
+      <div class="field"><label>Description</label><input id="npDesc" placeholder="Optional"></div>
+      <div class="row-3">
+        <div class="field"><label>Price (₹)</label><input id="npPrice" type="number" placeholder="0"></div>
+        <div class="field"><label>GST %</label><input id="npGst" type="number" placeholder="18"></div>
+        <div class="field"><label>HSN Code</label><input id="npHsn" placeholder="Optional"></div>
+      </div>
+      <div class="field"><label>Category</label><input id="npCategory" placeholder="e.g. Spares"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalNewProduct')">Cancel</button>
+      <button class="btn btn-primary" onclick="createProduct()">Add Product</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DATA ================= */
+let company = {
+  name:"Revival Lifters",
+  gstin:"19AADCD0000A1ZQ",
+  pan:"AADCD0000A",
+  address:"14, Bentinck Street, Ground Floor, Kolkata – 700001",
+  phone:"90000 00001",
+  email:"accounts@demo-co.example",
+  bank:{holder:"Revival Lifters", bank:"UCO Bank", branch:"Bentinck Street Branch, Kolkata", account:"0000 0000 0000", ifsc:"DEMO0000000", upi:"demo@upi"},
+  terms:"Payment should be made by cheque / bank draft. Interest will be charged @24% p.a. on bills not paid on time."
+};
+
+let customers = [
+  {id:1, name:"Ravi Kumar", phone:"90000 00002", email:"ravi@demo.example", gstin:"19DEMO0001Z", address:"Noida Sector 12, W Block, Pin 201301", orders:[
+    {id:"INV-049", date:"13 Apr 2026", amount:1850.91}
+  ]},
+  {id:2, name:"John Smith", phone:"90000 00003", email:"john@demo.example", gstin:"", address:"Salt Lake, Kolkata", orders:[
+    {id:"INV-041", date:"02 Feb 2026", amount:3220.00},
+    {id:"INV-036", date:"18 Jan 2026", amount:990.00}
+  ]},
+  {id:3, name:"Meera Traders", phone:"90000 00004", email:"meera@demo.example", gstin:"19DEMO0002Z", address:"Bentinck Street, Kolkata", orders:[
+    {id:"INV-044", date:"11 Mar 2026", amount:15400.50}
+  ]},
+  {id:4, name:"Anup Hydraulics", phone:"90000 00005", email:"", gstin:"19DEMO0003Z", address:"Howrah, West Bengal", orders:[]},
+  {id:5, name:"Deepa Enterprises", phone:"90000 00006", email:"deepa@demo.example", gstin:"", address:"Park Street, Kolkata", orders:[
+    {id:"INV-038", date:"25 Jan 2026", amount:2100.00}
+  ]},
+  {id:6, name:"Sourav Fabricators", phone:"90000 00007", email:"sourav@demo.example", gstin:"19DEMO0004Z", address:"Liluah, Howrah", orders:[]},
+];
+
+let products = [
+  {id:1, name:"Hand Trolly (Heavy Duty)", desc:"2-wheel steel hand trolley, 300kg capacity", price:3200, gst:18, hsn:"8716", category:"Material Handling", icon:"🛒"},
+  {id:2, name:"Solid Cushion Tyre 6x2", desc:"Forklift solid tyre, cushion type", price:4500, gst:28, hsn:"4011", category:"Tyres", icon:"⚙️"},
+  {id:3, name:"Hydraulic Stacker 1T", desc:"Manual hydraulic stacker, 1 ton, 3m lift", price:38500, gst:18, hsn:"8427", category:"Lifting Equipment", icon:"🏗️"},
+  {id:4, name:"Forklift Fork Extension", desc:"1.5m fork extension, pair", price:6200, gst:18, hsn:"8431", category:"Spares", icon:"🔧"},
+  {id:5, name:"Pallet Jack 2.5T", desc:"Manual pallet truck, 2.5 ton capacity", price:12800, gst:18, hsn:"8427", category:"Material Handling", icon:"📦"},
+  {id:6, name:"Tap (Brass)", desc:"Brass tap, standard size", price:999, gst:18, hsn:"8481", category:"Fittings", icon:"🔩"},
+  {id:7, name:"PVC Pipe (1 Bora)", desc:"Standard PVC pipe bundle", price:299, gst:18, hsn:"3917", category:"Fittings", icon:"🧵"},
+  {id:8, name:"Fevicol (500g)", desc:"Adhesive, general purpose", price:499, gst:18, hsn:"3506", category:"Consumables", icon:"🧴"},
+];
+
+let bills = [
+  {id:"INV-050", customer:"Meera Traders", phone:"90000 00004", date:"07 Sep 2026", amount:15400.50, status:"Pending", payment:"Credit"},
+  {id:"INV-049", customer:"Ravi Kumar", phone:"90000 00002", date:"13 Apr 2026", amount:1850.91, status:"Paid", payment:"UPI"},
+  {id:"INV-048", customer:"Deepa Enterprises", phone:"90000 00006", date:"02 Apr 2026", amount:2100.00, status:"Paid", payment:"Cash"},
+  {id:"INV-044", customer:"Meera Traders", phone:"90000 00004", date:"11 Mar 2026", amount:15400.50, status:"Partially Paid", payment:"Bank"},
+  {id:"INV-041", customer:"John Smith", phone:"90000 00003", date:"02 Feb 2026", amount:3220.00, status:"Paid", payment:"Card"},
+  {id:"INV-038", customer:"Deepa Enterprises", phone:"90000 00006", date:"25 Jan 2026", amount:2100.00, status:"Paid", payment:"Cash"},
+  {id:"INV-036", customer:"John Smith", phone:"90000 00003", date:"18 Jan 2026", amount:990.00, status:"Paid", payment:"UPI"},
+];
+
+let currentBill = { customer:null, items:[], payMethod:"Cash" };
+let prodView = "card";
+let invoiceCounter = 51;
+
+/* ================= HELPERS ================= */
+function fmt(n){ return "₹" + Number(n||0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function initials(name){ return name.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join(""); }
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+}
+function flashSaving(){
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncText');
+  dot.classList.add('saving'); txt.textContent = "Saving...";
+  clearTimeout(window._saveTimer);
+  window._saveTimer = setTimeout(()=>{ dot.classList.remove('saving'); txt.textContent="All changes saved"; }, 700);
+}
+
+/* ================= NAVIGATION ================= */
+function goTo(view){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.view===view));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  if(view==='dashboard') renderDashboard();
+  if(view==='bills') renderBillsTable();
+  if(view==='customers') renderCustomerGrid();
+  if(view==='products') renderProductGrid();
+  if(view==='company') loadCompanyForm();
+  if(view==='generate') renderInvoice();
+}
+document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click', ()=>goTo(el.dataset.view)));
+
+/* ================= DASHBOARD ================= */
+function renderDashboard(){
+  document.getElementById('statCustomers').textContent = customers.length;
+  document.getElementById('statProducts').textContent = products.length;
+  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  const body = document.getElementById('recentBillsBody');
+  body.innerHTML = bills.slice(0,5).map(b=>`
+    <tr onclick="previewBillById('${b.id}')">
+      <td><b>${b.id}</b></td><td>${b.customer}</td><td>${b.date}</td><td>${fmt(b.amount)}</td>
+      <td>${statusPill(b.status)}</td>
+    </tr>`).join('');
+}
+function statusPill(status){
+  const map = {Paid:'pill-green', Pending:'pill-orange', 'Partially Paid':'pill-blue', Void:'pill-red'};
+  return `<span class="pill ${map[status]||'pill-gray'}">${status}</span>`;
+}
+
+/* ================= GENERATE BILL ================= */
+function renderCustSearch(){
+  const q = document.getElementById('custSearch').value.trim().toLowerCase();
+  const box = document.getElementById('custSearchResults');
+  if(!q){ box.innerHTML=''; return; }
+  const matches = customers.filter(c=>c.name.toLowerCase().includes(q) || c.phone.includes(q)).slice(0,5);
+  box.innerHTML = matches.map(c=>`<div class="customer-result" onclick="selectCustomer(${c.id})"><b>${c.name}</b> — ${c.phone}</div>`).join('') || `<div class="customer-result" style="color:var(--muted)">No matches — try "+ New Customer"</div>`;
+}
+function selectCustomer(id){
+  currentBill.customer = customers.find(c=>c.id===id);
+  document.getElementById('custSearch').value = '';
+  document.getElementById('custSearchResults').innerHTML = '';
+  renderSelectedCustomer();
+  renderInvoice();
+}
+function renderSelectedCustomer(){
+  const box = document.getElementById('selectedCustomerBox');
+  const c = currentBill.customer;
+  if(!c){ box.innerHTML=''; return; }
+  box.innerHTML = `<div class="selected-customer">
+    <div><b>${c.name}</b><br><span style="color:var(--muted)">${c.phone}${c.gstin? ' · GSTIN '+c.gstin:''}</span></div>
+    <span style="cursor:pointer;color:var(--muted)" onclick="currentBill.customer=null;renderSelectedCustomer();renderInvoice()">✕</span>
+  </div>`;
+}
+function renderProdSearch(){
+  const q = document.getElementById('prodSearch').value.trim().toLowerCase();
+  const box = document.getElementById('prodSearchResults');
+  if(!q){ box.innerHTML=''; return; }
+  const matches = products.filter(p=>p.name.toLowerCase().includes(q)).slice(0,5);
+  box.innerHTML = matches.map(p=>`<div class="customer-result" onclick="addItem(${p.id})"><b>${p.name}</b> — ${fmt(p.price)} · GST ${p.gst}%</div>`).join('') || `<div class="customer-result" style="color:var(--muted)">No products found</div>`;
+}
+function addItem(productId){
+  const p = products.find(x=>x.id===productId);
+  currentBill.items.push({name:p.name, hsn:p.hsn, qty:1, rate:p.price, gst:p.gst});
+  document.getElementById('prodSearch').value='';
+  document.getElementById('prodSearchResults').innerHTML='';
+  renderItems();
+  renderInvoice();
+}
+function removeItem(idx){ currentBill.items.splice(idx,1); renderItems(); renderInvoice(); }
+function updateItem(idx, field, val){
+  currentBill.items[idx][field] = field==='name' ? val : Number(val);
+  renderInvoice();
+}
+function renderItems(){
+  const wrap = document.getElementById('itemRows');
+  const empty = document.getElementById('itemsEmpty');
+  empty.style.display = currentBill.items.length ? 'none' : 'flex';
+  wrap.innerHTML = currentBill.items.map((it,idx)=>{
+    const amount = it.qty*it.rate*(1+it.gst/100);
+    return `<div class="item-row">
+      <input value="${it.name}" oninput="updateItem(${idx},'name',this.value)">
+      <input type="number" min="1" value="${it.qty}" oninput="updateItem(${idx},'qty',this.value)">
+      <input type="number" min="0" value="${it.rate}" oninput="updateItem(${idx},'rate',this.value)">
+      <input type="number" min="0" value="${it.gst}" oninput="updateItem(${idx},'gst',this.value)">
+      <input value="${fmt(amount)}" readonly style="background:#F9FAFB;color:var(--muted)">
+      <button class="rm" onclick="removeItem(${idx})">✕</button>
+    </div>`;
+  }).join('');
+}
+document.getElementById('payMethods').addEventListener('click', e=>{
+  const chip = e.target.closest('.pay-chip'); if(!chip) return;
+  document.querySelectorAll('.pay-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  currentBill.payMethod = chip.dataset.pay;
+  renderInvoice();
+});
+function calcTotals(){
+  const subtotal = currentBill.items.reduce((s,it)=>s+it.qty*it.rate,0);
+  const gst = currentBill.items.reduce((s,it)=>s+it.qty*it.rate*it.gst/100,0);
+  const discount = Number(document.getElementById('discountInput')?.value || 0);
+  const grand = Math.max(subtotal+gst-discount,0);
+  return {subtotal, gst, discount, grand};
+}
+function renderInvoice(){
+  const t = calcTotals();
+  document.getElementById('tSubtotal').textContent = fmt(t.subtotal);
+  document.getElementById('tGst').textContent = fmt(t.gst);
+  document.getElementById('tDiscount').textContent = '−'+fmt(t.discount);
+  document.getElementById('tGrand').textContent = fmt(t.grand);
+
+  const c = currentBill.customer;
+  const invoiceNo = "INV-0"+invoiceCounter;
+  const dateStr = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  const cgst = t.gst/2, sgst = t.gst/2;
+
+  document.getElementById('invoiceSheet').innerHTML = invoiceHtml({
+    invoiceNo, dateStr, customer:c, items:currentBill.items, subtotal:t.subtotal, cgst, sgst, discount:t.discount, grand:t.grand, payMethod: currentBill.payMethod
+  });
+}
+function invoiceHtml({invoiceNo, dateStr, customer, items, subtotal, cgst, sgst, discount, grand, payMethod}){
+  const rows = items.length ? items.map((it,i)=>`
+    <tr>
+      <td>${i+1}</td><td>${it.name}</td><td>${it.hsn||'-'}</td><td>${it.qty}</td>
+      <td>${fmt(it.rate)}</td><td>${it.gst}%</td><td>${fmt(it.qty*it.rate*(1+it.gst/100))}</td>
+    </tr>`).join('') : `<tr><td colspan="7" style="text-align:center;color:var(--muted-2);padding:20px">No items added yet</td></tr>`;
+
+  return `
+    <div class="inv-top">
+      <div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="inv-logo">${initials(company.name)}</div>
+          <div>
+            <div class="inv-co-name">${company.name}</div>
+            <div class="inv-co-meta">${company.address}<br>${company.phone} · ${company.email}<br>GSTIN: ${company.gstin}</div>
+          </div>
+        </div>
+      </div>
+      <div class="inv-meta-right">
+        <div>INVOICE</div>
+        <div><b>${invoiceNo}</b></div>
+        <div>${dateStr}</div>
+      </div>
+    </div>
+    <div class="inv-parties">
+      <div>
+        <div class="inv-party-label">Bill To</div>
+        ${customer ? `<div class="inv-party-name">${customer.name}</div><div class="inv-party-meta">${customer.address||''}<br>${customer.phone}${customer.gstin? '<br>GSTIN: '+customer.gstin:''}</div>` : `<div class="inv-party-meta" style="color:var(--muted-2)">No customer selected</div>`}
+      </div>
+      <div>
+        <div class="inv-party-label">Payment Method</div>
+        <div class="inv-party-meta">${payMethod||'Cash'}</div>
+      </div>
+    </div>
+    <table class="inv-table">
+      <thead><tr><th>#</th><th>Item</th><th>HSN</th><th>Qty</th><th>Rate</th><th>GST</th><th>Amount</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="inv-totals">
+      <div class="totals-line"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+      <div class="totals-line"><span>CGST</span><span>${fmt(cgst)}</span></div>
+      <div class="totals-line"><span>SGST</span><span>${fmt(sgst)}</span></div>
+      <div class="totals-line"><span>Discount</span><span>−${fmt(discount)}</span></div>
+      <div class="totals-line grand"><span>Grand Total</span><span>${fmt(grand)}</span></div>
+    </div>
+    <div class="inv-footer">
+      <div class="inv-bank">
+        <b>Bank Details</b><br>
+        A/c Holder: ${company.bank.holder}<br>
+        Bank: ${company.bank.bank}, ${company.bank.branch}<br>
+        A/c No: ${company.bank.account} · IFSC: ${company.bank.ifsc}<br>
+        UPI: ${company.bank.upi}
+      </div>
+      <div class="qr-box">Scan to Pay (UPI QR)</div>
+    </div>
+    <div class="inv-terms">${company.terms}</div>
+  `;
+}
+function resetBill(){ currentBill = {customer:null, items:[], payMethod:"Cash"}; document.getElementById('discountInput').value=0; renderSelectedCustomer(); renderItems(); renderInvoice(); toast("Form cleared"); }
+function saveBill(){
+  if(!currentBill.customer){ toast("Select a customer first"); return; }
+  if(!currentBill.items.length){ toast("Add at least one product"); return; }
+  const t = calcTotals();
+  const id = "INV-0"+invoiceCounter;
+  bills.unshift({id, customer:currentBill.customer.name, phone:currentBill.customer.phone, date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}), amount:t.grand, status:"Paid", payment:currentBill.payMethod});
+  currentBill.customer.orders.unshift({id, date:bills[0].date, amount:t.grand});
+  invoiceCounter++;
+  toast(id+" saved successfully");
+  flashSaving();
+  resetBill();
+}
+
+/* ================= BILLS PAGE ================= */
+function renderBillsTable(){
+  document.getElementById('billsCount').textContent = bills.length + " invoices";
+  const q = (document.getElementById('billSearch').value||'').toLowerCase();
+  const status = document.getElementById('billStatusFilter').value;
+  const sort = document.getElementById('billSortFilter').value;
+  let rows = bills.filter(b => (b.customer.toLowerCase().includes(q) || b.id.toLowerCase().includes(q) || b.phone.includes(q)) && (!status || b.status===status));
+  if(sort==='amount-desc') rows.sort((a,b)=>b.amount-a.amount);
+  if(sort==='amount-asc') rows.sort((a,b)=>a.amount-b.amount);
+  document.getElementById('billsTableBody').innerHTML = rows.map(b=>`
+    <tr onclick="previewBillById('${b.id}')">
+      <td><b>${b.id}</b></td><td>${b.customer}</td><td>${b.date}</td><td>${fmt(b.amount)}</td>
+      <td><span class="pill pill-gray">${b.payment}</span></td><td>${statusPill(b.status)}</td>
+    </tr>`).join('') || `<tr><td colspan="6"><div class="empty"><div class="big">📭</div>No bills match your filters</div></td></tr>`;
+}
+function previewBillById(id){
+  const b = bills.find(x=>x.id===id);
+  const cust = customers.find(c=>c.name===b.customer) || {name:b.customer, phone:b.phone, address:'', gstin:''};
+  const gst = b.amount - b.amount/1.18;
+  document.getElementById('modalInvoiceSheet').innerHTML = invoiceHtml({
+    invoiceNo:b.id, dateStr:b.date, customer:cust,
+    items:[{name:"Items as billed", hsn:"-", qty:1, rate:b.amount-gst, gst:18}],
+    subtotal:b.amount-gst, cgst:gst/2, sgst:gst/2, discount:0, grand:b.amount, payMethod:b.payment
+  });
+  openModal('modalBillPreview');
+}
+
+/* ================= CUSTOMERS ================= */
+function renderCustomerGrid(){
+  document.getElementById('custCount').textContent = customers.length + " customers";
+  const q = (document.getElementById('custPageSearch').value||'').toLowerCase();
+  const list = customers.filter(c=>c.name.toLowerCase().includes(q) || c.phone.includes(q));
+  document.getElementById('custGrid').innerHTML = list.map(c=>{
+    const lifetime = c.orders.reduce((s,o)=>s+o.amount,0);
+    return `<div class="card cust-card" onclick="openCustomerPanel(${c.id})">
+      <div class="cust-top">
+        <div class="avatar">${initials(c.name)}</div>
+        <div><div class="cust-name">${c.name}</div><div class="cust-phone">${c.phone}</div></div>
+      </div>
+      <div class="cust-stats">
+        <div>Orders<b>${c.orders.length}</b></div>
+        <div>Lifetime<b>${fmt(lifetime)}</b></div>
+        <div>Last Visit<b>${c.orders[0]?.date || '—'}</b></div>
+      </div>
+    </div>`;
+  }).join('') || `<div class="empty" style="grid-column:1/-1"><div class="big">👥</div>No customers found</div>`;
+}
+function openCustomerPanel(id){
+  const c = customers.find(x=>x.id===id);
+  const lifetime = c.orders.reduce((s,o)=>s+o.amount,0);
+  const panel = document.getElementById('customerPanel');
+  panel.innerHTML = `
+    <div class="panel-head">
+      <div>
+        <div class="panel-avatar">${initials(c.name)}</div>
+        <div style="font-weight:700;font-size:17px">${c.name}</div>
+        <div style="color:var(--muted);font-size:12.5px">${c.phone}</div>
+      </div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="info-line"><span>Email</span><span>${c.email||'—'}</span></div>
+      <div class="info-line"><span>GSTIN</span><span>${c.gstin||'—'}</span></div>
+      <div class="info-line"><span>Address</span><span style="text-align:right;max-width:180px">${c.address||'—'}</span></div>
+      <div class="info-line"><span>Lifetime Purchase</span><span><b>${fmt(lifetime)}</b></span></div>
+
+      <div class="tabs">
+        <div class="tab active">Past Bills</div>
+        <div class="tab">Outstanding</div>
+        <div class="tab">Notes</div>
+      </div>
+      <div>
+        ${c.orders.length ? c.orders.map(o=>`
+          <div class="order-row" onclick="previewBillById('${o.id}')">
+            <span><b>${o.id}</b><br><span style="color:var(--muted);font-size:11.5px">${o.date}</span></span>
+            <span>${fmt(o.amount)}</span>
+          </div>`).join('') : `<div class="empty" style="padding:24px 0"><div class="big">🧾</div>No past bills yet</div>`}
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="closePanel();goTo('generate');document.getElementById('custSearch').value='';selectCustomer(${c.id})">+ Generate Bill for ${c.name.split(' ')[0]}</button>
+    </div>
+  `;
+  panel.querySelectorAll('.tab').forEach(t=>t.addEventListener('click', ()=>{
+    panel.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+  }));
+  document.getElementById('panelOverlay').classList.add('show');
+  panel.classList.add('show');
+}
+function closePanel(){
+  document.getElementById('panelOverlay').classList.remove('show');
+  document.getElementById('customerPanel').classList.remove('show');
+}
+function createCustomer(){
+  const name = document.getElementById('ncName').value.trim();
+  if(!name){ toast("Enter a customer name"); return; }
+  const c = {id:Date.now(), name, phone:document.getElementById('ncPhone').value, email:document.getElementById('ncEmail').value, gstin:document.getElementById('ncGstin').value, address:document.getElementById('ncAddress').value, orders:[]};
+  customers.push(c);
+  closeModal('modalNewCustomer');
+  ['ncName','ncPhone','ncGstin','ncEmail','ncAddress'].forEach(id=>document.getElementById(id).value='');
+  renderCustomerGrid();
+  if(document.getElementById('view-generate').classList.contains('active')) selectCustomer(c.id);
+  toast("Customer added");
+}
+
+/* ================= PRODUCTS ================= */
+function setProdView(v){
+  prodView = v;
+  document.getElementById('toggleCard').classList.toggle('active', v==='card');
+  document.getElementById('toggleTable').classList.toggle('active', v==='table');
+  document.getElementById('prodGrid').style.display = v==='card' ? 'grid' : 'none';
+  document.getElementById('prodTableWrap').style.display = v==='table' ? 'block' : 'none';
+}
+function renderProductGrid(){
+  const q = (document.getElementById('prodPageSearch').value||'').toLowerCase();
+  const list = products.filter(p=>p.name.toLowerCase().includes(q));
+  document.getElementById('prodGrid').innerHTML = list.map(p=>`
+    <div class="card prod-card">
+      <div class="prod-cat">${p.icon}</div>
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-desc">${p.desc}</div>
+      <div class="prod-price-row"><span class="prod-price">${fmt(p.price)}</span><span class="pill pill-blue">GST ${p.gst}%</span></div>
+    </div>`).join('') || `<div class="empty" style="grid-column:1/-1"><div class="big">📦</div>No products found</div>`;
+  document.getElementById('prodTableBody').innerHTML = list.map(p=>`
+    <tr>
+      <td><b>${p.name}</b></td><td>${p.category}</td><td>${p.hsn}</td><td>${fmt(p.price)}</td><td>${p.gst}%</td>
+      <td><button class="btn btn-ghost btn-sm">Edit</button></td>
+    </tr>`).join('');
+}
+function createProduct(){
+  const name = document.getElementById('npName').value.trim();
+  if(!name){ toast("Enter a product name"); return; }
+  products.push({
+    id:Date.now(), name, desc:document.getElementById('npDesc').value||'—',
+    price:Number(document.getElementById('npPrice').value)||0,
+    gst:Number(document.getElementById('npGst').value)||18,
+    hsn:document.getElementById('npHsn').value||'-',
+    category:document.getElementById('npCategory').value||'General', icon:"📦"
+  });
+  closeModal('modalNewProduct');
+  ['npName','npDesc','npPrice','npGst','npHsn','npCategory'].forEach(id=>document.getElementById(id).value='');
+  renderProductGrid();
+  toast("Product added to catalog");
+}
+
+/* ================= COMPANY PROFILE ================= */
+function loadCompanyForm(){
+  document.getElementById('cName').value = company.name;
+  document.getElementById('cGstin').value = company.gstin;
+  document.getElementById('cPan').value = company.pan;
+  document.getElementById('cAddress').value = company.address;
+  document.getElementById('cPhone').value = company.phone;
+  document.getElementById('cEmail').value = company.email;
+  document.getElementById('bHolder').value = company.bank.holder;
+  document.getElementById('bBank').value = company.bank.bank;
+  document.getElementById('bBranch').value = company.bank.branch;
+  document.getElementById('bAccount').value = company.bank.account;
+  document.getElementById('bIfsc').value = company.bank.ifsc;
+  document.getElementById('bUpi').value = company.bank.upi;
+  document.getElementById('cTerms').value = company.terms;
+  document.getElementById('companyLogoPreview').textContent = initials(company.name);
+}
+function onCompanyEdit(){ flashSaving(); }
+function saveCompany(){
+  company.name = document.getElementById('cName').value;
+  company.gstin = document.getElementById('cGstin').value;
+  company.pan = document.getElementById('cPan').value;
+  company.address = document.getElementById('cAddress').value;
+  company.phone = document.getElementById('cPhone').value;
+  company.email = document.getElementById('cEmail').value;
+  company.bank.holder = document.getElementById('bHolder').value;
+  company.bank.bank = document.getElementById('bBank').value;
+  company.bank.branch = document.getElementById('bBranch').value;
+  company.bank.account = document.getElementById('bAccount').value;
+  company.bank.ifsc = document.getElementById('bIfsc').value;
+  company.bank.upi = document.getElementById('bUpi').value;
+  company.terms = document.getElementById('cTerms').value;
+  document.getElementById('companyLogoPreview').textContent = initials(company.name);
+  toast("Company profile saved");
+}
+
+/* ================= MODALS ================= */
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+/* ================= INIT ================= */
+renderDashboard();
+renderItems();
+renderInvoice();
+loadCompanyForm();
+</script>
+</body>
+</html>

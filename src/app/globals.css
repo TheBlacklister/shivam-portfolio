@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Warm "sunset" palette. The muted ramp is contrast-checked against --color-bg:
+     8.75 / 6.63 / 5.17:1 — all pass WCAG AA. Re-check if you darken any of them. */
+  --color-bg: #0b0908;
+  --color-surface: #120e0c;
+  --color-card: #16110f;
+  --color-line: rgba(255, 236, 224, 0.09);
+  --color-line-strong: rgba(255, 236, 224, 0.17);
+  --color-muted: #b5aaa4;
+  --color-muted-2: #9e938c;
+  --color-muted-3: #8b8079;
+  --color-accent: #fb923c;
+  --color-accent-2: #f472b6;
+  --color-accent-3: #facc15;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    background-color: var(--color-bg);
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: #fff;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 35%, transparent);
+    color: #fff;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--color-bg); }
+  ::-webkit-scrollbar-thumb {
+    background: #2a201b;
+    border-radius: 99px;
+    border: 2px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: #3b2d25; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .text-gradient {
+    background-image: linear-gradient(100deg, #fff 0%, #ffd9b8 30%, #fb7185 62%, #facc15 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-accent {
+    background-image: linear-gradient(100deg, #fb923c, #f472b6 52%, #facc15);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glass {
+    background: rgba(18, 14, 12, 0.66);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(255,226,206,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,226,206,0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .card-sheen {
+    background:
+      radial-gradient(600px circle at var(--mx, 50%) var(--my, 0%), rgba(251,146,60,0.11), transparent 42%);
+  }
+
+  .hairline {
+    background: linear-gradient(90deg, transparent, rgba(255,226,206,0.16), transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
