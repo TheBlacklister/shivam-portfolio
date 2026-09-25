@@ -21,7 +21,7 @@
 
 export type Logo =
   | { kind: "file"; label: string; src: string; width: number; height: number }
-  | { kind: "custom"; label: string; mark: "minicon" | "ramaiah"; tone: "brand" | "mono" }
+  | { kind: "custom"; label: string; mark: "minicon" | "ramaiah" | "billing"; tone: "brand" | "mono" }
   | { kind: "path"; label: string; viewBox: string; path: string }
   | { kind: "wordmark"; label: string; text: string; dot?: string }
   | { kind: "monogram"; label: string; initial: string };
@@ -74,6 +74,19 @@ export const logos: Record<string, Logo> = {
     tone: "brand",
   },
   Minicon: { kind: "custom", label: "Minicon", mark: "minicon", tone: "mono" },
+  "Billing Software": {
+    kind: "custom",
+    label: "Billing Software",
+    mark: "billing",
+    tone: "brand",
+  },
+  "Internz Valley": {
+    kind: "file",
+    label: "Internz Valley",
+    src: "/logos/internzvalley.png",
+    width: 360,
+    height: 360,
+  },
 };
 
 export function getLogo(name: string): Logo | undefined {

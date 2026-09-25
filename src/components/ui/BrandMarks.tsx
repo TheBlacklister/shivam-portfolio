@@ -81,3 +81,29 @@ export function RamaiahMark({ className }: Props) {
     </svg>
   );
 }
+
+/**
+ * Billing Software — a receipt with a torn edge and a rupee glyph.
+ * The prototype is GST invoicing for Indian retail, and its UI brand colour
+ * is #3B82F6, so the mark carries that rather than the site palette.
+ */
+export function BillingMark({ className }: Props) {
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden fill="none">
+      {/* receipt body, torn along the bottom */}
+      <path
+        d="M22 12 h56 a4 4 0 0 1 4 4 v70 l-10 -7 -10 7 -10 -7 -10 7 -10 -7 -10 7 v-70 a4 4 0 0 1 4 -4 z"
+        stroke="#3b82f6"
+        strokeWidth="6"
+        strokeLinejoin="round"
+      />
+      {/* rupee */}
+      <g stroke="#3b82f6" strokeWidth="5.5" strokeLinecap="round">
+        <path d="M38 31 h24" />
+        <path d="M38 42 h24" />
+        <path d="M38 53 h10 c9 0 14 -5 14 -11" />
+        <path d="M38 53 l18 18" />
+      </g>
+    </svg>
+  );
+}

@@ -43,6 +43,7 @@ export const projects: Project[] = [
   },
   {
     slug: "billing-software",
+    logoKey: "Billing Software",
     title: "Billing Software",
     kicker: "GST invoicing for Indian retail",
     year: "2025",
@@ -64,11 +65,12 @@ export const projects: Project[] = [
   },
   {
     slug: "course-platform",
-    title: "Course Platform",
+    logoKey: "Internz Valley",
+    title: "Internz Valley",
     kicker: "Content & course-selling platform",
     year: "2025",
     summary:
-      "A responsive content and course-selling platform with multimedia lessons, built and delivered for a client at Leadzsite.",
+      "A responsive content and course-selling platform with multimedia lessons — built and delivered end-to-end for Internz Valley.",
     description:
       "Directed delivery of a content/course-selling platform end-to-end — catalogue and lesson structure, multimedia playback, responsive layouts across devices, and checkout. Explored AI-assisted tagging and categorisation to make a growing library actually discoverable.",
     challenge:
