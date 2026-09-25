@@ -113,20 +113,10 @@ export function Workflow() {
             {workflow.map((w, i) => {
               const tone = rampColor(i / (total - 1));
               return (
-                <motion.li
+                <li
                   key={w.step}
-                  className="relative z-10 snap-start pr-10"
+                  className="reveal relative z-10 snap-start pr-10"
                   style={{ width: STEP_W }}
-                  initial={reduced ? undefined : { opacity: 0, y: 18 }}
-                  whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{
-                    duration: 0.5,
-                    // Capped: steps past the fold enter view later, so a delay that
-                    // kept growing with the index would leave them visibly lagging.
-                    delay: 0.12 + Math.min(i, 3) * 0.1,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
                 >
                   {/* number tile — opaque, so the rail passes cleanly behind it */}
                   <span
@@ -147,7 +137,7 @@ export function Workflow() {
 
                   <h3 className="mt-6 font-display text-lg font-semibold text-white">{w.title}</h3>
                   <p className="mt-2.5 pr-2 text-sm leading-relaxed text-muted-2">{w.body}</p>
-                </motion.li>
+                </li>
               );
             })}
           </ol>

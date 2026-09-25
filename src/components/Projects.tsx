@@ -174,7 +174,9 @@ export function Projects() {
       </div>
 
       <motion.div layout className="grid gap-5 md:grid-cols-2">
-        <AnimatePresence mode="popLayout">
+        {/* initial={false}: cards present on first render appear immediately
+              rather than animating in after hydration. Filter changes still animate. */}
+        <AnimatePresence mode="popLayout" initial={false}>
           {shown.map((p, i) => (
             <motion.div
               key={p.slug}

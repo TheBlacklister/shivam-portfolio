@@ -39,18 +39,11 @@ export function Timeline() {
           />
         </div>
 
-        {timeline.map((t, i) => {
+        {timeline.map((t) => {
           const Icon = icons[t.kind];
           const isFuture = t.kind === "future";
           return (
-            <motion.li
-              key={t.title}
-              initial={reduced ? undefined : { opacity: 0, x: -16 }}
-              whileInView={reduced ? undefined : { opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-70px" }}
-              transition={{ duration: 0.6, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative"
-            >
+            <li key={t.title} className="reveal group relative">
               {t.logoKey ? (
                 <span className="absolute -left-[61px] top-0 rounded-2xl bg-bg p-1">
                   <CompanyLogo company={t.logoKey} size="sm" />
@@ -72,7 +65,7 @@ export function Timeline() {
               <h3 className="mt-1.5 font-display text-lg font-semibold text-white">{t.title}</h3>
               <p className="mt-0.5 text-sm text-amber-400/80">{t.org}</p>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-2">{t.body}</p>
-            </motion.li>
+            </li>
           );
         })}
       </ol>
