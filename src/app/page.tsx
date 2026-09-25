@@ -12,13 +12,11 @@ import { Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { CustomCursor } from "@/components/CustomCursor";
 import { BackToTop } from "@/components/BackToTop";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import { ResumeViewer } from "@/components/ResumeViewer";
 
 export default function Home() {
   return (
     <>
-      <LoadingScreen />
       <ScrollProgress />
       <CustomCursor />
       <Nav />

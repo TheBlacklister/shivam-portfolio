@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { navLinks, site } from "@/data/site";
@@ -62,7 +61,7 @@ export function Nav() {
               : "border-transparent bg-transparent",
           )}
         >
-          <Link
+          <a
             href="#top"
             className="flex items-center gap-2.5 pl-1 text-sm font-semibold tracking-tight"
           >
@@ -70,11 +69,11 @@ export function Nav() {
               SG
             </span>
             <span className="hidden text-base sm:inline">{site.name}</span>
-          </Link>
+          </a>
 
           <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((l) => (
-              <Link
+              <a
                 key={l.href}
                 href={l.href}
                 className={cn(
@@ -91,7 +90,7 @@ export function Nav() {
                   />
                 ) : null}
                 <span className="relative">{l.label}</span>
-              </Link>
+              </a>
             ))}
           </div>
 
@@ -127,14 +126,14 @@ export function Nav() {
           >
             <div className="glass flex flex-col gap-1 rounded-2xl border border-line p-3">
               {navLinks.map((l) => (
-                <Link
+                <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className="rounded-xl px-4 py-3 text-sm text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white"
                 >
                   {l.label}
-                </Link>
+                </a>
               ))}
               <a
                 href={`mailto:${site.email}`}

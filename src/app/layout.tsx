@@ -7,12 +7,20 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
+  // Metric-matched fallback: text renders in a system font sized to match,
+  // so the swap to Inter does not shift layout.
+  adjustFontFallback: true,
 });
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
+  // Only the weights the display face actually uses.
+  weight: ["500", "600", "700"],
 });
 
 export const viewport: Viewport = {

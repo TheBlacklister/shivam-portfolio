@@ -12,12 +12,22 @@ import { openResume } from "@/lib/resume";
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } },
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.04 } },
 };
 
 const item = {
   hidden: { opacity: 0, y: 26 },
   show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] as const } },
+};
+
+/**
+ * The headline is the LCP element. An element at opacity 0 is not "contentful",
+ * so fading it in pushes LCP out by the whole animation. This moves it instead —
+ * transforms still paint, so it counts from the first frame.
+ */
+const itemLcp = {
+  hidden: { y: 22 },
+  show: { y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export function Hero() {
@@ -34,7 +44,7 @@ export function Hero() {
           animate={reduced ? undefined : "show"}
           className="max-w-4xl"
         >
-          <motion.div variants={item} className="mb-8 flex flex-wrap items-center gap-3">
+          <motion.div variants={itemLcp} className="mb-8 flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/[0.04] px-3 py-1.5 text-xs text-zinc-300">
               <span className="relative flex size-1.5">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-70" />
@@ -49,7 +59,7 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            variants={item}
+            variants={itemLcp}
             className="text-[clamp(3.25rem,10vw,8rem)] font-semibold leading-[0.92] tracking-[-0.045em]"
           >
             <span className="block text-gradient">Shivam</span>
@@ -57,7 +67,7 @@ export function Hero() {
           </motion.h1>
 
           <motion.p
-            variants={item}
+            variants={itemLcp}
             className="mt-6 font-display text-[clamp(1.35rem,3.2vw,2.25rem)] font-semibold leading-tight tracking-[-0.02em]"
           >
             <span className="text-gradient-accent">AI Product Engineer</span>
@@ -66,7 +76,7 @@ export function Hero() {
           </motion.p>
 
           <motion.p
-            variants={item}
+            variants={itemLcp}
             className="mt-7 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
           >
             {site.heroSub}
