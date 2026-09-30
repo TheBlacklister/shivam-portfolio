@@ -141,7 +141,7 @@ export function Projects() {
       eyebrow="Selected work"
       title={
         <>
-          Five things I <span className="text-gradient-accent">built and shipped</span>.
+          Four things I <span className="text-gradient-accent">built and shipped</span>.
         </>
       }
       lead="Each of these I owned end-to-end — the product decision, the architecture, the code, and the server it runs on."
