@@ -107,3 +107,30 @@ export function BillingMark({ className }: Props) {
     </svg>
   );
 }
+
+/**
+ * Naman Trading Co. — an ear of wheat: stalk, paired grains, a single awn.
+ * The storefront sells stone-ground atta and its UI accent is ochre #C8902E,
+ * so the mark carries that rather than the site palette.
+ */
+export function NamanMark({ className }: Props) {
+  const grain = "M0 0 c-7 -3 -11 -10 -10 -18 c7 3 11 10 10 18 z";
+  return (
+    <svg viewBox="0 0 100 100" className={className} aria-hidden fill="none">
+      {/* stalk */}
+      <path d="M50 92 L50 22" stroke="#c8902e" strokeWidth="5" strokeLinecap="round" />
+      {/* awn */}
+      <path d="M50 22 L50 8" stroke="#c8902e" strokeWidth="3" strokeLinecap="round" />
+      {/* grains, left and right of the stalk */}
+      <g fill="#c8902e">
+        {[34, 50, 66].map((y) => (
+          <g key={y}>
+            <path d={grain} transform={`translate(48 ${y})`} />
+            <path d={grain} transform={`translate(52 ${y}) scale(-1 1)`} />
+          </g>
+        ))}
+        <path d="M50 32 c-5 -5 -5 -12 0 -17 c5 5 5 12 0 17 z" />
+      </g>
+    </svg>
+  );
+}

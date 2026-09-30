@@ -64,6 +64,28 @@ export const projects: Project[] = [
     status: "In production",
   },
   {
+    slug: "naman-trading",
+    logoKey: "Naman Trading Co.",
+    title: "Naman Trading Co.",
+    kicker: "Bilingual D2C storefront for a flour mill",
+    year: "2026",
+    summary:
+      "A Hindi–English storefront for a Delhi chakki-atta business — a scroll-driven 3D seed-to-flour story, then shop, trial combos, bulk quotes and pincode delivery checks.",
+    description:
+      "A direct-to-consumer site for a family flour business that has traded grain in Delhi since 1996. The hero is a Three.js scene driven by scroll that follows one grain from sowing through harvest and the stone chakki to a sealed pack. Below it sits a working shop: searchable, sortable catalogue with 1 kg to 50 kg packs, a build-your-own 250 g trial combo, a persistent cart and checkout, a pincode checker with per-zone delivery ETAs, and a bulk-order quote form for restaurants, bakeries and kirana stores. Every heading is set in both Devanagari and English.",
+    challenge:
+      "A mandi-era business selling a commodity product needed to explain why fresh stone-ground atta is worth choosing, to customers who read Hindi first, English first, or both.",
+    result:
+      "A single self-contained page with a bilingual story-to-checkout flow, light and dark themes, reduced-motion support, and GST-invoice bulk ordering for business buyers.",
+    stack: ["HTML", "CSS", "JavaScript", "Three.js", "Hindi / English"],
+    aiStack: ["Claude Code"],
+    tags: ["Product", "Engineering"],
+    accent: "from-amber-700/30 to-yellow-600/10",
+    liveUrl: "/demos/naman-trading.html",
+    repoUrl: "",
+    status: "Concept",
+  },
+  {
     slug: "course-platform",
     logoKey: "Internz Valley",
     title: "Internz Valley",

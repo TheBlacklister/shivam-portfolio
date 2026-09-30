@@ -38,6 +38,7 @@ so the row never renders broken.
 | Minicon | Hand-built SVG face — wink, dot eye, smile (`BrandMarks.tsx`) |
 | Internz Valley | Real logo — `internzvalley.png`, the IV emblem lifted from internzvalley.com |
 | Billing Software | Hand-built SVG receipt with a rupee glyph (`BrandMarks.tsx`) |
+| Naman Trading Co. | Hand-built SVG wheat ear in the storefront's ochre (`BrandMarks.tsx`) |
 | Independent / Freelance | Sparkle monogram (intentional — not a company) |
 
 Pokus and Ramaiah were **redrawn as vectors** rather than imported as image files,
