@@ -124,7 +124,7 @@ export const projects: Project[] = [
     stack: ["HTML", "CSS", "JavaScript", "Three.js", "Hindi / English"],
     aiStack: ["Claude Code"],
     tags: ["Product", "Engineering"],
-    accent: "from-pink-500/25 to-rose-400/10",
+    accent: "from-orange-700/30 to-amber-600/10",
     liveUrl: "/demos/hcg-son-tools.html",
     repoUrl: "",
     status: "Concept",

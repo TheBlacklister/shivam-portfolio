@@ -39,7 +39,7 @@ so the row never renders broken.
 | Internz Valley | Real logo — `internzvalley.png`, the IV emblem lifted from internzvalley.com |
 | Billing Software | Hand-built SVG receipt with a rupee glyph (`BrandMarks.tsx`) |
 | Naman Trading Co. | Hand-built SVG wheat ear in the storefront's ochre (`BrandMarks.tsx`) |
-| HCG & Son Tools Co. | Hand-built SVG gear with a hex bore in the storefront's pink (`BrandMarks.tsx`) |
+| HCG & Son Tools Co. | Hand-built SVG gear with a hex bore in the storefront's copper (`BrandMarks.tsx`) |
 | Independent / Freelance | Sparkle monogram (intentional — not a company) |
 
 Pokus and Ramaiah were **redrawn as vectors** rather than imported as image files,

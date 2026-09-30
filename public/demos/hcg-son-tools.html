@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>HCG &amp; Son Tools Co. | एचसीजी एंड सन टूल्स | Power tool spare parts, bits and machines in Janbazar, Kolkata</title>
 <meta name="description" content="HCG &amp; Son Tools Co. deals in spare parts for electric power tools: armatures, field coils, carbon brushes, switches, gears, chucks, drill and screw bits, marble cutter blades, polishing pads and machines. Based in Janbazar, Kolkata. Delivered across Kolkata and Howrah, couriered across India.">
-<meta name="theme-color" content="#121212">
+<meta name="theme-color" content="#0c0b0a">
 <meta property="og:title" content="HCG &amp; Son Tools Co. | Power tool spares, bits and machines">
 <meta property="og:description" content="Armatures, field coils, carbon brushes, switches, chucks, bits, blades and machines for drills, marble cutters, polishers and grinders.">
 <meta property="og:type" content="website">
@@ -540,33 +540,34 @@ legend{color:var(--ink)} legend .deva{color:var(--ink-3)}
 .no-webgl .stage{background:radial-gradient(70% 60% at 50% 40%, #1f1f1f, #121212)}
 
 /* ================= POINT-CLOUD STAGE: one animation behind the whole page, content on glass ================= */
-:root{ --pink:#f0648d; --green:#7ddc5f; --blue:#6aa7ff; --red:#ff5a4f; --ink:#f4f6fb; --ink-2:#b4bccb; --ink-3:#8791a3;
-  --glass:rgba(12,14,20,.66); --glass-2:rgba(255,255,255,.035); --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.16);
-  --text:#f4f6fb; --muted:#b4bccb; --line:rgba(255,255,255,.09); --card:rgba(255,255,255,.035); --bg:#05070b; }
-html,body{background:#05070b}
+/* palette from real parts: commutator copper, laminated steel, nylon cream, stator enamel green */
+:root{ --pink:#d9793f; --green:#3fae5c; --blue:#a9aeb3; --red:#e5533d; --ink:#f1ece0; --ink-2:#bdb5a6; --ink-3:#8f887c;
+  --glass:rgba(20,17,14,.66); --glass-2:rgba(255,255,255,.035); --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.16);
+  --text:#f1ece0; --muted:#bdb5a6; --line:rgba(255,255,255,.09); --card:rgba(255,255,255,.035); --bg:#0c0b0a; }
+html,body{background:#0c0b0a}
 body{color:var(--ink)}
-.bgfx{position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(120% 90% at 50% 10%, #0d1424 0%, #05070b 60%)}
+.bgfx{position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(120% 90% at 50% 10%, #1e1610 0%, #0c0b0a 60%)}
 .bgfx canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
 .bgfx .vignette{position:absolute; inset:0; background:radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,.6) 100%)}
 .bgfx .grain{position:absolute; inset:-50%; opacity:.05; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 main,footer{position:relative; z-index:1}
-.loader{position:fixed; inset:0; z-index:60; display:grid; place-items:center; background:#05070b; color:var(--ink-3); font-family:var(--mono); font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; transition:opacity .8s}
+.loader{position:fixed; inset:0; z-index:60; display:grid; place-items:center; background:#0c0b0a; color:var(--ink-3); font-family:var(--mono); font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; transition:opacity .8s}
 .loader.done{opacity:0; pointer-events:none}
 /* nav */
-.nav{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:calc(env(safe-area-inset-top,0px) + 1.1rem) 1.4rem .8rem; pointer-events:none; transform:none!important; background:linear-gradient(180deg, rgba(5,7,11,.85), rgba(5,7,11,0))}
+.nav{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:calc(env(safe-area-inset-top,0px) + 1.1rem) 1.4rem .8rem; pointer-events:none; transform:none!important; background:linear-gradient(180deg, rgba(12,11,10,.85), rgba(12,11,10,0))}
 .nav > *{pointer-events:auto}
 .nav-l{position:relative; min-width:16rem; height:2rem; display:flex; align-items:center}
 .hint{font-family:var(--mono); font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); transition:opacity .3s}
 .mini-mark{position:absolute; left:0; font-family:"Unbounded", var(--sans); font-weight:900; font-style:normal; transform:skewX(-14deg); font-size:1.35rem; color:var(--pink); text-decoration:none; letter-spacing:-.02em; opacity:0; transition:opacity .3s}
 .nav.scrolled .hint{opacity:0} .nav.scrolled .mini-mark{opacity:1}
 .keys{display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end}
-.keys a,.keys button,.menu-btn{font-family:var(--mono); font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:#d9dee8; background:rgba(28,31,38,.85); border:0; border-radius:3px; padding:.42rem .65rem; text-decoration:none; cursor:pointer; display:inline-flex; gap:.1rem; align-items:center; white-space:nowrap}
-.keys a:hover,.keys button:hover,.menu-btn:hover{background:#2b303a; color:#fff}
+.keys a,.keys button,.menu-btn{font-family:var(--mono); font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:#e6dfd2; background:rgba(38,33,28,.85); border:0; border-radius:3px; padding:.42rem .65rem; text-decoration:none; cursor:pointer; display:inline-flex; gap:.1rem; align-items:center; white-space:nowrap}
+.keys a:hover,.keys button:hover,.menu-btn:hover{background:#3a332b; color:#fff}
 kbd{font-family:var(--mono); font-size:inherit; background:none; border:0; padding:0; color:inherit}
 kbd::before{content:"["} kbd::after{content:"] "; white-space:pre}
-#cartCount{margin-left:.35rem; background:var(--pink); color:#12060a; border-radius:2px; padding:0 .3rem; font-weight:500}
+#cartCount{margin-left:.35rem; background:var(--pink); color:#1a0d05; border-radius:2px; padding:0 .3rem; font-weight:500}
 .menu-btn{display:none}
-.mobile-menu{position:absolute; top:calc(100% + .2rem); right:1rem; width:min(20rem,calc(100vw - 2rem)); display:none; background:rgba(12,14,20,.96); border:1px solid var(--edge); border-radius:14px; padding:.5rem; backdrop-filter:blur(14px)}
+.mobile-menu{position:absolute; top:calc(100% + .2rem); right:1rem; width:min(20rem,calc(100vw - 2rem)); display:none; background:rgba(20,17,14,.96); border:1px solid var(--edge); border-radius:14px; padding:.5rem; backdrop-filter:blur(14px)}
 .mobile-menu.open{display:block}
 .mobile-menu a{display:flex; justify-content:space-between; padding:.7rem .8rem; color:var(--ink); text-decoration:none; font-family:var(--mono); text-transform:uppercase; font-size:.85rem; letter-spacing:.08em; border-radius:8px}
 .mobile-menu a span{color:var(--ink-3); font-family:"Noto Sans Devanagari", var(--sans); text-transform:none; letter-spacing:0}
@@ -577,8 +578,8 @@ kbd::before{content:"["} kbd::after{content:"] "; white-space:pre}
 .hero{min-height:100vh; min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; text-align:center; padding:calc(5.2rem + env(safe-area-inset-top,0px)) 1.2rem 6rem}
 .wordmark{margin:0; width:100%; font-family:"Unbounded", var(--sans); font-weight:900; font-size:clamp(3.6rem,17.5vw,17rem); line-height:.9; letter-spacing:-.04em; color:var(--pink); transform:skewX(-14deg); text-align:center; white-space:nowrap}
 .hero h1{margin:clamp(2.5rem,9vh,6rem) 0 1.2rem; font-family:var(--sans); font-weight:900; letter-spacing:-.045em; line-height:.98; font-size:clamp(2.6rem,7.2vw,6.4rem); color:#fff; max-width:14ch; text-shadow:0 0 40px rgba(255,255,255,.28), 0 0 90px rgba(255,255,255,.12)}
-.hero-sub{max-width:44rem; margin:0 auto 1.6rem; color:#dfe3ec; font-size:clamp(1.02rem,1.5vw,1.3rem); line-height:1.55; text-shadow:0 2px 20px rgba(0,0,0,.8)}
-.cmd{font-family:var(--mono); font-size:clamp(.9rem,1.3vw,1.1rem); color:#fff; background:rgba(8,10,14,.85); border:1px solid rgba(255,255,255,.14); border-radius:6px; padding:.55rem .9rem; cursor:pointer; margin:0}
+.hero-sub{max-width:44rem; margin:0 auto 1.6rem; color:#e8e1d4; font-size:clamp(1.02rem,1.5vw,1.3rem); line-height:1.55; text-shadow:0 2px 20px rgba(0,0,0,.8)}
+.cmd{font-family:var(--mono); font-size:clamp(.9rem,1.3vw,1.1rem); color:#fff; background:rgba(14,12,10,.85); border:1px solid rgba(255,255,255,.14); border-radius:6px; padding:.55rem .9rem; cursor:pointer; margin:0}
 .cmd span{color:var(--green)}
 .cmd:hover{border-color:rgba(255,255,255,.35)}
 /* sections float as glass panels over the animation */
@@ -590,25 +591,25 @@ section.block:last-of-type{padding-bottom:clamp(7rem,22vh,14rem)}
 .head h2{font-family:var(--sans); font-weight:900; letter-spacing:-.045em; line-height:1; font-size:clamp(2.3rem,5.4vw,4.8rem); color:#fff; text-shadow:0 0 36px rgba(255,255,255,.22)}
 .head p{color:var(--ink-2)}
 .tiles{background:var(--edge); border-color:var(--edge)}
-.tile{background:rgba(12,14,20,.72)} .tile:hover{background:rgba(22,26,34,.85)} .tile span{color:var(--ink-2)}
+.tile{background:rgba(20,17,14,.72)} .tile:hover{background:rgba(34,29,24,.85)} .tile span{color:var(--ink-2)}
 .points li,.card,.preset,.zone,.timeline li,form.panel,.ptable,.minis,.opt,.cfg{background:var(--glass-2)!important; border-color:var(--edge)!important}
 .card:hover{border-color:var(--edge-2)!important}
-.pack{background:radial-gradient(70% 60% at 50% 40%, rgba(106,167,255,.12) 0%, rgba(8,10,14,.6) 70%)!important; border-bottom:1px solid var(--edge)!important}
+.pack{background:radial-gradient(70% 60% at 50% 40%, rgba(169,174,179,.12) 0%, rgba(14,12,10,.6) 70%)!important; border-bottom:1px solid var(--edge)!important}
 .pack::after{background-image:radial-gradient(rgba(255,255,255,.08) 1px, transparent 1.2px)!important; background-size:14px 14px!important}
-.builder{background:linear-gradient(160deg, rgba(106,167,255,.16), rgba(255,255,255,.03) 60%)!important; border-color:rgba(106,167,255,.3)!important}
-.pin-box{background:linear-gradient(160deg, rgba(125,220,95,.14), rgba(255,255,255,.03) 60%)!important; border-color:rgba(125,220,95,.3)!important}
+.builder{background:linear-gradient(160deg, rgba(169,174,179,.16), rgba(255,255,255,.03) 60%)!important; border-color:rgba(169,174,179,.3)!important}
+.pin-box{background:linear-gradient(160deg, rgba(63,174,92,.14), rgba(255,255,255,.03) 60%)!important; border-color:rgba(63,174,92,.3)!important}
 .cfg{background:linear-gradient(160deg, rgba(224,137,79,.16), rgba(255,255,255,.03) 60%)!important; border-color:rgba(224,137,79,.32)!important}
 .ptable th{background:rgba(0,0,0,.35)!important} .ptable tr.on td{background:rgba(224,137,79,.18)!important}
 .numbered li{border-top-color:var(--edge)} .faq details{border-bottom-color:var(--edge)}
-.field-in,.f input,.f select,.f textarea,.pin-row input,.qty,.news.center input{background:rgba(5,7,11,.75)!important; border-color:rgba(255,255,255,.16)!important}
-.chip{border-color:rgba(255,255,255,.16)} .chip[aria-pressed="true"]{background:#fff; color:#05070b}
+.field-in,.f input,.f select,.f textarea,.pin-row input,.qty,.news.center input{background:rgba(12,11,10,.75)!important; border-color:rgba(255,255,255,.16)!important}
+.chip{border-color:rgba(255,255,255,.16)} .chip[aria-pressed="true"]{background:#fff; color:#0c0b0a}
 .pick button{border-color:rgba(255,255,255,.16)}
-footer{background:rgba(5,7,11,.82)!important; backdrop-filter:blur(14px); border-top:1px solid var(--edge)!important}
-dialog{background:#0b0e14!important; border-color:var(--edge)!important} .dlg-head{background:#0b0e14!important; border-bottom-color:var(--edge)!important}
+footer{background:rgba(12,11,10,.82)!important; backdrop-filter:blur(14px); border-top:1px solid var(--edge)!important}
+dialog{background:#13110f!important; border-color:var(--edge)!important} .dlg-head{background:#13110f!important; border-bottom-color:var(--edge)!important}
 .wa{z-index:45}
-.no-webgl .bgfx{background:radial-gradient(120% 90% at 50% 10%, #13203a 0%, #05070b 60%)}
+.no-webgl .bgfx{background:radial-gradient(120% 90% at 50% 10%, #2a1d12 0%, #0c0b0a 60%)}
 .grid-more{display:flex; align-items:center; justify-content:center; gap:.8rem; flex-wrap:wrap; margin-top:1.6rem}
-::selection{background:#f0648d; color:#12060a}
+::selection{background:#d9793f; color:#1a0d05}
 .wordmark{font-size:12vw; overflow:visible; padding:0 .08em; display:inline-block; width:auto; max-width:none}
 @media (max-width:520px){ .mini-mark{opacity:0!important} .nav.scrolled .mini-mark{opacity:1!important} #pinChip{display:none!important} .nav{align-items:flex-start} }
 .hero{min-height:88vh; min-height:88svh}
@@ -1826,8 +1827,8 @@ const LIB = (function () {
   const sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.01, 100);
   sc.add(new THREE.HemisphereLight(LIB.C(0xf2f5f8), LIB.C(0x2a2a2a), 0.9));
   const k = new THREE.DirectionalLight(LIB.C(0xffffff), 2.4); k.position.set(3, 5, 4); sc.add(k);
-  const rim = new THREE.DirectionalLight(LIB.C(0x8fb8ff), 1.6); rim.position.set(-4, 2, -3); sc.add(rim);
-  const rim2 = new THREE.DirectionalLight(LIB.C(0xff9ad8), 0.7); rim2.position.set(4, 1, -4); sc.add(rim2);
+  const rim = new THREE.DirectionalLight(LIB.C(0xd4dade), 1.6); rim.position.set(-4, 2, -3); sc.add(rim);
+  const rim2 = new THREE.DirectionalLight(LIB.C(0xffb27a), 0.7); rim2.position.set(4, 1, -4); sc.add(rim2);
   const kinds = [...new Set(PRODUCTS.map(p => p.thumb))];
   let i = 0;
   const step = () => {
@@ -1879,7 +1880,7 @@ const LIB = (function () {
   const C = LIB.C, isMobile = matchMedia('(max-width: 760px)').matches, Q = isMobile ? 0.5 : 1;
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, isMobile ? 1.5 : 2)); renderer.setClearColor(0x000000, 0);
   renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.NoToneMapping;
-  const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(C(0x05070b), 0.028);
+  const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(C(0x0c0b0a), 0.028);
   const camera = new THREE.PerspectiveCamera(36, 1, 0.02, 200);
   const V = (x, y, z) => new THREE.Vector3(x, y, z), E = (x, y, z) => new THREE.Euler(x, y, z);
   const FLOOR_Y = -1.545;
@@ -1946,7 +1947,7 @@ const LIB = (function () {
   const valleyX = z => { let best = 1e9, bx = 0; for (let i = 0; i < VX.length; i += 4) { const d = Math.abs(VX[i].z - z); if (d < best) { best = d; bx = VX[i].x; } } return bx; };
   const hillH = (x, z) => { const cx = 0.6 * valleyX(z), d = Math.abs(x - cx), side = smooth(clamp((d - 2.2) / 7)); return VALLEY + side * (0.8 + 3.2 * fbm(x * 0.12 + 7, z * 0.12)) + 0.25 * (fbm(x * 0.6, z * 0.6) - 0.5); };
   {
-    const N = Math.round(90000 * Q), P = new Float32Array(N * 3), Cc = new Float32Array(N * 3), g1 = C(0x7ddc5f), g2 = C(0x3f8f3a), wht = C(0xdfe8ff), c = new THREE.Color();
+    const N = Math.round(90000 * Q), P = new Float32Array(N * 3), Cc = new Float32Array(N * 3), g1 = C(0x4cbf68), g2 = C(0x1d6b34), wht = C(0xefe6d2), c = new THREE.Color();
     for (let i = 0; i < N; i++) { const x = -34 + Math.random() * 68, z = -46 + Math.random() * 54, y = hillH(x, z); P[i * 3] = x; P[i * 3 + 1] = y; P[i * 3 + 2] = z;
       const hgt = clamp((y - VALLEY) / 3.2); if (hgt < 0.12) c.copy(wht).multiplyScalar(0.18 + Math.random() * 0.25); else c.copy(g2).lerp(g1, hgt).multiplyScalar(0.55 + Math.random() * 0.7); if (Math.random() < 0.02) c.copy(wht);
       Cc[i * 3] = c.r; Cc[i * 3 + 1] = c.g; Cc[i * 3 + 2] = c.b; }
@@ -1960,14 +1961,14 @@ const LIB = (function () {
   const CU = C(0xe0894f), RED = C(0xff5a4f), WH = C(0xffffff), tc = new THREE.Color(), tp = new THREE.Vector3();
   {
     const N = Math.round(4000 * Q), P = new Float32Array(N * 3), Cc = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) { const th = Math.random() * 6.28, ph = Math.acos(Math.random() * 1.6 - 0.6), r = 80; P[i * 3] = Math.sin(ph) * Math.cos(th) * r; P[i * 3 + 1] = Math.cos(ph) * r * 0.9 + 6; P[i * 3 + 2] = Math.sin(ph) * Math.sin(th) * r; const b = 0.3 + Math.random() * 0.7; Cc[i * 3] = b * 0.85; Cc[i * 3 + 1] = b * 0.9; Cc[i * 3 + 2] = b; }
+    for (let i = 0; i < N; i++) { const th = Math.random() * 6.28, ph = Math.acos(Math.random() * 1.6 - 0.6), r = 80; P[i * 3] = Math.sin(ph) * Math.cos(th) * r; P[i * 3 + 1] = Math.cos(ph) * r * 0.9 + 6; P[i * 3 + 2] = Math.sin(ph) * Math.sin(th) * r; const b = 0.3 + Math.random() * 0.7; Cc[i * 3] = b; Cc[i * 3 + 1] = b * 0.93; Cc[i * 3 + 2] = b * 0.82; }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(P, 3)); g.setAttribute('color', new THREE.BufferAttribute(Cc, 3));
     const m = glowDots(0.35, 0.9); m.fog = false; const stars = new THREE.Points(g, m); stars.frustumCulled = false; scene.add(stars);
   }
   const DN = Math.round(900 * Q), dPos = new Float32Array(DN * 3), dSeed = [];
   for (let i = 0; i < DN; i++) dSeed.push({ x: -6 + Math.random() * 12, y: -1.5 + Math.random() * 5, z: -5 + Math.random() * 9, s: Math.random() * 6.28 });
   const dGeo = new THREE.BufferGeometry(); dGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
-  const dMat = repel(new THREE.PointsMaterial({ map: dotTex, size: 0.03, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55, color: C(0x9fc3ff) }));
+  const dMat = repel(new THREE.PointsMaterial({ map: dotTex, size: 0.03, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.55, color: C(0xe6d9bf) }));
   const dust = new THREE.Points(dGeo, dMat); dust.frustumCulled = false; scene.add(dust);
 
   /* ---- the drill on a turntable, everything drawn in points ---- */
@@ -1975,8 +1976,8 @@ const LIB = (function () {
   const PIVOT_X = -0.72, pivot = new THREE.Group(); pivot.position.set(PIVOT_X, 0, 0); scene.add(pivot);
   drill.position.set(-PIVOT_X, 0, 0); pivot.add(drill);
   const tt = new THREE.Group(); tt.position.set(0, FLOOR_Y - 0.03, 0); pivot.add(tt);
-  tt.add(LIB.mesh(new THREE.CylinderGeometry(0.8, 0.85, 0.06, 64), LIB.std(0x6aa7ff)));
-  tt.add(LIB.mesh(new THREE.TorusGeometry(0.95, 0.012, 6, 120), LIB.std(0x6aa7ff), 0, 0, 0)).children.at(-1)?.rotation.set(Math.PI / 2, 0, 0);
+  tt.add(LIB.mesh(new THREE.CylinderGeometry(0.8, 0.85, 0.06, 64), LIB.std(0xa9aeb3)));
+  tt.add(LIB.mesh(new THREE.TorusGeometry(0.95, 0.012, 6, 120), LIB.std(0xa9aeb3), 0, 0, 0)).children.at(-1)?.rotation.set(Math.PI / 2, 0, 0);
   toPoints(drill, 7500, 0.021, 1.9); toPoints(tt, 2500, 0.022, 1.1);
   const PLAN = [
     ['armature', V(-2.6, 1.2, 0.8), E(0.3, 0.7, 0.25), 0.07, 0.15],

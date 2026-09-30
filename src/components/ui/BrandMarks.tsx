@@ -137,21 +137,21 @@ export function NamanMark({ className }: Props) {
 
 /**
  * HCG & Son Tools Co. — an eight-tooth gear with a hex bore.
- * The storefront sells power-tool spares and its wordmark is pink #F0648D,
- * so the mark carries that rather than the site palette.
+ * The storefront sells power-tool spares and its wordmark is commutator
+ * copper #D9793F, so the mark carries that rather than the site palette.
  */
 export function HcgMark({ className }: Props) {
   const teeth = Array.from({ length: 8 }, (_, i) => i * 45);
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden fill="none">
-      <g fill="#f0648d">
+      <g fill="#d9793f">
         {teeth.map((a) => (
           <rect key={a} x="43" y="8" width="14" height="18" rx="3" transform={`rotate(${a} 50 50)`} />
         ))}
       </g>
-      <circle cx="50" cy="50" r="27" stroke="#f0648d" strokeWidth="11" />
+      <circle cx="50" cy="50" r="27" stroke="#d9793f" strokeWidth="11" />
       {/* hex bore */}
-      <path d="M50 40 L58.7 45 L58.7 55 L50 60 L41.3 55 L41.3 45 Z" fill="#f0648d" />
+      <path d="M50 40 L58.7 45 L58.7 55 L50 60 L41.3 55 L41.3 45 Z" fill="#d9793f" />
     </svg>
   );
 }
