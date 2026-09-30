@@ -21,7 +21,7 @@
 
 export type Logo =
   | { kind: "file"; label: string; src: string; width: number; height: number }
-  | { kind: "custom"; label: string; mark: "minicon" | "ramaiah" | "billing" | "naman"; tone: "brand" | "mono" }
+  | { kind: "custom"; label: string; mark: "minicon" | "ramaiah" | "billing" | "naman" | "hcg"; tone: "brand" | "mono" }
   | { kind: "path"; label: string; viewBox: string; path: string }
   | { kind: "wordmark"; label: string; text: string; dot?: string }
   | { kind: "monogram"; label: string; initial: string };
@@ -84,6 +84,12 @@ export const logos: Record<string, Logo> = {
     kind: "custom",
     label: "Naman Trading Co.",
     mark: "naman",
+    tone: "brand",
+  },
+  "HCG & Son Tools Co.": {
+    kind: "custom",
+    label: "HCG & Son Tools Co.",
+    mark: "hcg",
     tone: "brand",
   },
   "Internz Valley": {

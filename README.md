@@ -26,7 +26,7 @@ npm run lint    # ESLint
 |---|---|
 | `site.ts` | Name, tagline, email, social links, résumé path, SEO copy, nav items |
 | `logos.ts` | Company marks — real vector, typographic wordmark, or monogram tile |
-| `projects.ts` | The four project cards — summary, challenge, result, stack, links, status |
+| `projects.ts` | The five project cards — summary, challenge, result, stack, links, status |
 | `experience.ts` | Job history (the accordion), education, leadership |
 | `timeline.ts` | The vertical career timeline |
 | `skills.ts` | Skill groups (pills) and the four hero metrics |
@@ -39,8 +39,8 @@ npm run lint    # ESLint
 1. **`site.ts` → `url`** — currently `https://shivamgupta.dev`. Set your real domain.
    It feeds canonical URLs, the sitemap, and Open Graph tags. This is the last TODO left.
 3. **`projects.ts` → `repoUrl`** — still empty on every project, so no **Code** buttons
-   render. `liveUrl` is set for all four (minicon.in, internzvalley.com, and the
-   bundled billing and Naman Trading demos).
+   render. `liveUrl` is set for all five (minicon.in, internzvalley.com, and the
+   bundled billing, Naman Trading and HCG & Son Tools demos).
 3. **`testimonials.ts`** — done: five real Google reviews. Two are marked `excerpt: true`
    because Google truncates longer reviews; the card renders a trailing "…" for those.
 4. **Project screenshots** — cards currently use a gradient header keyed off `accent`.
@@ -170,6 +170,12 @@ The Naman Trading Co. card links to a self-contained storefront served from `pub
 file with **one change**: a `noindex, nofollow` robots meta, matching the billing demo.
 Its contact details and licence numbers were already placeholders (`+91 98000 00000`,
 `GSTIN 07XXXXXXXXXXXXX`), so nothing needed scrubbing.
+
+## Bundled demo — `public/demos/hcg-son-tools.html`
+
+The HCG & Son Tools Co. card links to a self-contained storefront, bundled the same way
+as the Naman Trading demo: the original file plus a `noindex, nofollow` robots meta. Its
+contact details and GSTIN were already placeholders.
 
 ## Deploy
 

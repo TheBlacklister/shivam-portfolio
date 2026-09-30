@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getLogo } from "@/data/logos";
-import { BillingMark, MiniconMark, NamanMark, RamaiahMark } from "./BrandMarks";
+import { BillingMark, HcgMark, MiniconMark, NamanMark, RamaiahMark } from "./BrandMarks";
 import { cn } from "@/lib/utils";
 
 type Size = "sm" | "md";
@@ -44,7 +44,7 @@ export function CompanyLogo({
   }
 
   if (logo.kind === "custom") {
-    const Mark = { minicon: MiniconMark, billing: BillingMark, naman: NamanMark, ramaiah: RamaiahMark }[
+    const Mark = { minicon: MiniconMark, billing: BillingMark, naman: NamanMark, hcg: HcgMark, ramaiah: RamaiahMark }[
       logo.mark
     ];
     return (

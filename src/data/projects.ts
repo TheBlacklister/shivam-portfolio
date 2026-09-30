@@ -107,6 +107,28 @@ export const projects: Project[] = [
     repoUrl: "",
     status: "Concept",
   },
+  {
+    slug: "hcg-son-tools",
+    logoKey: "HCG & Son Tools Co.",
+    title: "HCG & Son Tools Co.",
+    kicker: "Power-tool spares storefront",
+    year: "2026",
+    summary:
+      "A storefront for a Kolkata power-tool spares dealer — searchable by model number, with 3D-rendered parts, a cut-to-length copper cable builder, service kits and dealer quotes.",
+    description:
+      "A direct-to-consumer and trade site for a Janbazar dealer in armatures, field coils, carbon brushes, switches, bits, blades and machines. The hero is a Three.js field of floating parts, and every product thumbnail is a part modelled and rendered in the browser rather than a photo. The shop searches by the model number on a machine's label, with quantity discounts at 10 and 50 pieces. A copper-cable configurator prices 2 or 3 core cable by thickness and length with coil discounts and a sizing guide per machine, alongside build-your-own service kits, a pincode checker with same-day to courier ETAs, a dealer-quote form, and cart, checkout and order history. Headings are set in both Devanagari and English.",
+    challenge:
+      "Spare parts are bought by fit, not by browsing: a repair shop knows the model number on the machine, not the part name, and a wrong armature is money down the drain.",
+    result:
+      "A single self-contained page where parts are found by model number and fit, cable is sized and priced to the metre, and trade buyers get GST invoices and carton-rate quotes.",
+    stack: ["HTML", "CSS", "JavaScript", "Three.js", "Hindi / English"],
+    aiStack: ["Claude Code"],
+    tags: ["Product", "Engineering"],
+    accent: "from-pink-500/25 to-rose-400/10",
+    liveUrl: "/demos/hcg-son-tools.html",
+    repoUrl: "",
+    status: "Concept",
+  },
 ];
 
 /** Derived from the data so a filter never renders with nothing behind it. */
