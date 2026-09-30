@@ -175,7 +175,9 @@ Its contact details and licence numbers were already placeholders (`+91 98000 00
 
 The HCG & Son Tools Co. card links to a self-contained storefront, bundled the same way
 as the Naman Trading demo: the original file plus a `noindex, nofollow` robots meta. Its
-contact details and GSTIN were already placeholders.
+contact details and GSTIN were already placeholders. It shares the Naman page's layout —
+sticky 3D story, promise strip, section order, nav and footer — in a copper, steel and
+enamel palette taken from real motor parts.
 
 ## Deploy
 
