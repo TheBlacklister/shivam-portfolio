@@ -9,7 +9,7 @@ export type Project = {
   result: string;
   stack: string[];
   aiStack: string[];
-  tags: ("Product" | "Engineering" | "AI" | "Concept")[];
+  tags: ("Product" | "Engineering" | "AI" | "Concept" | "Science" | "3D" | "Interactive")[];
   accent: string; // tailwind-safe gradient pair
   liveUrl?: string;
   repoUrl?: string;
@@ -127,6 +127,45 @@ export const projects: Project[] = [
     accent: "from-orange-700/30 to-amber-600/10",
     liveUrl: "/demos/hcg-son-tools.html",
     repoUrl: "",
+    status: "Concept",
+  },
+  {
+    slug: "microblazar",
+    logoKey: "Microblazar",
+    title: "A Black Hole is Pointing at Us",
+    kicker: "Interactive astronomy experience",
+    year: "2026",
+    summary:
+      "An interactive storytelling experience inspired by the first microblazar discovered inside the Milky Way, transforming a complex scientific paper into a cinematic journey through space.",
+  
+    description:
+      "A mobile-first interactive web experience inspired by the discovery of the first confirmed microblazar in our galaxy. Users begin on Earth before flying through the Solar System and across the Milky Way to a black hole located 12,000 light-years away. As the journey unfolds, scientific concepts become interactive visualizations: the accretion disk grows, matter streams from the companion star, and a relativistic jet can be rotated to reveal why the object appears dramatically brighter when viewed almost head-on. Key discoveries from the research paper—including the jet travelling at nearly three quarters the speed of light, the 11-day orbital period, the enormous 100 light-year bubble created by the counter-jet, and the gamma-ray emission at the impact site—are presented through immersive animations rather than static figures, making cutting-edge astrophysics accessible to everyone.",
+  
+    challenge:
+      "Modern astronomy papers contain remarkable discoveries, but their technical language and static figures make them difficult for a general audience to understand and share.",
+  
+    result:
+      "A cinematic, interactive science experience that transforms a peer-reviewed discovery into an intuitive visual journey, allowing users to explore the physics themselves while making complex astronomy engaging, memorable and highly shareable.",
+  
+    stack: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Three.js",
+      "GSAP",
+      "WebGL"
+    ],
+  
+    aiStack: ["Claude Code", "Emergent"],
+  
+    tags: ["Science", "3D", "Interactive"],
+  
+    accent: "from-indigo-700/30 to-violet-600/10",
+  
+    liveUrl: "/demos/black-hole.html",
+  
+    repoUrl: "",
+  
     status: "Concept",
   },
 ];
