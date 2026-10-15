@@ -168,6 +168,28 @@ export const projects: Project[] = [
   
     status: "Concept",
   },
+  {
+      slug: "kindly-revert",
+      logoKey: "Kindly Revert",
+      title: "Kindly Revert",
+      kicker: "Workplace message rewriter and office betting pool",
+      year: "2026",
+      summary:
+        "A tongue-in-cheek workplace tool that rewrites blunt messages into ones you can send to your boss, decodes corporate jargon, and runs a play-money betting pool for your office.",
+      description:
+        "A single-page site built as a carbon-copy interoffice memo. The hero is a scroll-driven Three.js story that follows a message from rant to machine to polished output to the boss's cabin. The rewriter has three modes: Polish turns what you think into what you can send, Reply answers an annoying message professionally, and Decode translates corporate speak into what it really means. A diplomacy dial runs from 'say it straight' to 'UN Secretary-General' across five tones (Diplomatic, Professional, Assertive, Light humour and Elegantly passive-aggressive), with before-and-after rage meters, a jargon index and a running count of civilised messages. A phrasebook of corporate clichés and their real meanings feeds straight into Decode. The office pool lets a team register a company with a boss codename, open questions such as who arrives after 10:15 or what mood the boss walks in with, and bet play coins from a 1,000-coin start, with winning bets splitting the pot by stake, a leaderboard and floor chatter. Light and dark themes are included, and there is a built-in rule-based fallback for when the AI rewriter is unavailable.",
+      challenge:
+        "Everyone drafts the email they actually want to send before the one they should, and the gap between the two is where careers and team morale get lost.",
+      result:
+        "A playful single page where a rant becomes a sendable message in one click, corporate jargon is decoded on demand, and an office can bet play coins on the day's small dramas without anyone embarrassing a colleague.",
+      stack: ["HTML", "CSS", "JavaScript", "Three.js"],
+      aiStack: ["Claude Code"],
+      tags: ["Product", "Engineering"],
+      accent: "from-blue-700/30 to-rose-500/10",
+      liveUrl: "/demos/kindly-revert.html",
+      repoUrl: "",
+      status: "Concept",
+  },
 ];
 
 /** Derived from the data so a filter never renders with nothing behind it. */
